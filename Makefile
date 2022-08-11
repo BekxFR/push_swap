@@ -10,9 +10,10 @@
 #                                                                              #
 # **************************************************************************** #
 
-.PHONY : all norm clean fclean re
+.PHONY : all reall soft norm clean fclean re
 
 NAME := push_swap.a
+SOFT_NAME := push_swap
 
 CC := gcc
 FLAGS := -Wall -Wextra -Werror -I includes/
@@ -41,7 +42,7 @@ OBJ = $(addprefix $(OBJ_DIR),$(OBJS))
 
 OBJF := .cache_exists
 
-all : ${FLIB} ${NAME}
+all : ${FLIB} ${NAME} ${SOFT_NAME}
 
 ${FLIB} :
 	${MAKE} all -C libft
@@ -57,6 +58,11 @@ ${OBJ_DIR}%.o : %.c | $(OBJF)
 	${CC} ${FLAGS} -c $< -o $@
 	@echo "${NC}"
 
+${SOFT_NAME} :
+	@echo "${BLUE}###${NC}Creation du fichier ${SOFT_NAME}${BLUE}###${ORANGE}"
+	${CC} ${FLAGS} -o ${SOFT_NAME} ${NAME}
+	@echo "${NC}"
+
 $(OBJF) :
 	@mkdir -p ${OBJ_DIR}
 
@@ -69,6 +75,7 @@ clean :
 fclean : clean
 	@echo "${RED}###${NC}Nettoyage de l'archive ${NAME}${RED}###"
 	${RM} -f ${NAME}
+	${RM} -f push_swap
 	@echo "${GREEN}###${NC}Nettoyage OK${GREEN}###${NC}\n"
 
 re : fclean all

@@ -6,6 +6,18 @@
 
 //#define NB 3
 
+typedef struct	ps_list
+{
+	int 			data;
+	struct ps_list	*next;
+}	t_ps;
+
+typedef struct	ps_list2
+{
+	int 			data2;
+	struct ps_list2	*next;
+}	t_ps2;
+
 int	ft_push_swap(int i)
 {
 	if (!i)
@@ -13,186 +25,93 @@ int	ft_push_swap(int i)
 	return (i);
 }
 
-void	ft_sa(int *a)
+void	ft_printlst(t_ps *start)
 {
-	int	tmp;
-
-	if (!a || !a[0] || !a[1])
-		return;
-	tmp = a[1];
-	a[1] = a[0];
-	a[0] = tmp;
-}
-
-void	ft_sb(int *b)
-{
-	int	tmp;
-
-	if (!b || !b[0] || !b[1])
-		return;
-	tmp = b[1];
-	b[1] = b[0];
-	b[0] = tmp;
-}
-
-void	ft_ss(int *a, int *b)
-{
-	ft_sa(a);
-	ft_sb(b);
-}
-
-void	ft_pa(int *a, int *b)
-{
-	int	tmp;
-	int	tmp2;
-	int	i;
-
-	if (!b[0] || !b)
-		return;
-	tmp = a[0];
-	a[0] = b[0];
-	i = 0;
-	while (a[++i])
+	t_ps *tmp;
+	tmp = start;
+	ft_printf("\n");
+	while (tmp)
 	{
-		tmp2 = a[i];
-		a[i] = tmp;
-		tmp = tmp2;
+		ft_printf("%d ", tmp->data);
+		tmp = tmp->next;
 	}
-	/*
-	 j = 0;
-	 while (!a[j])
-	 	j++;
-	while (i < j + 1)
-	 */
 }
 
-void	ft_pb(int *a, int *b)
+void	ft_printlst2(t_ps2 *start2)
 {
-	int	tmp;
-	int	tmp2;
-	int	i;
-
-	if (!a[0] || !a)
-		return;
-	tmp = b[0];
-	b[0] = a[0];
-	i = 0;
-	while (b[++i])
+	t_ps2 *tmp;
+	tmp = start2;
+	ft_printf("\n");
+	while (tmp)
 	{
-		tmp2 = b[i];
-		b[i] = tmp;
-		tmp = tmp2;
+		ft_printf("%d ", tmp->data2);
+		tmp = tmp->next;
 	}
-	/*
-	 j = 0;
-	 while (!b[j])
-	 	j++;
-	while (i < j + 1)
-	 */
 }
 
-void ft_ra(int *a)
-{
-	int	i;
-	int	j;
-	int	tmp;
+//t_ps ft_insert_lst(void *content)
+//{
+//	t_ps	*list;
+//	list = (t_ps *)malloc(sizeof(t_ps));
+//	if (!list)
+//		return (NULL);
+//	list->content = content;
+//	list->next = NULL;
+//	return (list);
+//}
 
-	if (!a)
-		return ;
-	i = 0;
-	while (a[i])
-		i++;
-	if (i < 2)
-		return ;
-	j = -1;
-	tmp = a[0];
-	while (++j < i)
+void	*ft_lst_last(t_ps *lst)
+{
+	if (lst == NULL)
 	{
-		a[j] = a[j + 1];
+		return (lst);
 	}
-	a[j] = tmp;
-}
-
-void ft_rb(int *b)
-{
-	int	i;
-	int	j;
-	int	tmp;
-
-	if (!b)
-		return ;
-	i = 0;
-	while (b[i])
-		i++;
-	if (i < 2)
-		return ;
-	j = -1;
-	tmp = b[0];
-	while (++j < i)
+	while (lst->next != NULL)
 	{
-		b[j] = b[j + 1];
+		lst = lst->next;
 	}
-	b[j] = tmp;
+	return (lst);
 }
 
-void	ft_rr(int *a, int *b)
+void	ft_lst_back(t_ps **lst, t_ps *new)
 {
-	if (!a || !b)
-		return ;
-	ft_ra(a);
-	ft_rb(b);
-}
+	t_ps	*tmp;
 
-void ft_rra(int *a)
-{
-	int	i;
-	int	j;
-	int	tmp;
-
-	if (!a)
-		return ;
-	i = 0;
-	while (!a[i])
-		i++;
-	if (i < 2)
-		return ;
-	tmp = a[i];
-	j = -1;
-	while (a[++j])
+	if (*lst == NULL)
 	{
-		a[j  + 1] = a[j];
+		*lst = new;
 	}
-	a[0] = tmp;
-}
-
-void ft_rrb(int *b)
-{
-	int	i;
-	int	j;
-	int	tmp;
-
-	if (!b)
-		return ;
-	i = 0;
-	while (!b[i])
-		i++;
-	if (i < 2)
-		return ;
-	tmp = b[i];
-	j = -1;
-	while (b[++j])
+	else
 	{
-		b[j  + 1] = b[j];
+		tmp = ft_lst_last(*(lst));
+		tmp->next = new;
 	}
-	b[0] = tmp;
 }
 
-void ft_rrr(int *a, int *b)
+void ft_lstajouttest(t_ps **start, int i)
 {
-	if (!a || !b)
+	t_ps *tmp;
+	tmp = (t_ps *)malloc(sizeof(t_ps));
+	if (!tmp)
 		return ;
-	ft_rra(a);
-	ft_rrb(b);
+	tmp->data = i;
+	tmp->next = *start;
+	*start = tmp;
+}
+
+void ft_lstendajouttest(t_ps2 **start2, int i)
+{
+	t_ps2 *tmp2;
+	if (start2 == NULL)
+		return ;
+	tmp2 = *start2;
+	while (tmp2->next != NULL)
+		tmp2 = tmp2->next;
+	tmp2->next = (t_ps2 *)malloc(sizeof(t_ps2));
+	if (!tmp2->next)
+		return ;
+	tmp2->data2 = i;
+	tmp2->next = NULL;
 }
 
 int	main(int argc, char **argv)
@@ -200,26 +119,49 @@ int	main(int argc, char **argv)
 	int	i[argc];
 	int	j;
 
+//	t_ps	ps_list;
+	t_ps	*start = NULL;
+	t_ps2	*start2 = NULL;
+
 	j = -1;
 	while (++j < argc - 1)
 	{
-		i[j] = atoi(argv[j + 1]);
+		i[j] = ft_atoi(argv[j + 1]);
+		ft_lstajouttest(&start, i[j]);
 		if (((ft_strlen(argv[j + 1]) > 11) || (i[j] > INT_MAX) || (i[j] < INT_MIN)))
 		{
-			ft_printf("Error");
+			ft_printf("Error\n");
 			return (0);
 		}
 	}
+	printf("J:%d", j);
+	j = -1;
+	while (++j < argc - 1)
+	{
+		ft_lstendajouttest(&start2, i[j]);
+	}
+
 	j = 0;
 	if (argc <= 4)
-
+	{
 		while (i[j] && j < argc - 1)
 		{
 			if (j == argc - 2)
-				ft_printf("PS:%d", ft_push_swap(i[j]));
+			{
+				ft_printf("PS:%d", ft_push_swap(i[1]));
+				ft_printlst(start);
+//				ft_printlst2(start2);
+			}
 			else
+			{
 				ft_printf("PS:%d\n", ft_push_swap(i[j]));
+				ft_printlst(start);
+				ft_printf("\n");
+//				ft_printlst2(start2);
+				ft_printf("\n");
+			}
 			j++;
 		}
+	}
 	return 0;
 }
