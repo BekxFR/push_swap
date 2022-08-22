@@ -25,10 +25,10 @@ int	ft_push_swap(int i)
 	return (i);
 }
 
-void	ft_printlst(t_ps *start)
+void	ft_printlst(t_ps **start)
 {
 	t_ps *tmp;
-	tmp = start;
+	tmp = *start;
 	ft_printf("\n");
 	while (tmp)
 	{
@@ -49,46 +49,7 @@ void	ft_printlst2(t_ps2 *start2)
 	}
 }
 
-//t_ps ft_insert_lst(void *content)
-//{
-//	t_ps	*list;
-//	list = (t_ps *)malloc(sizeof(t_ps));
-//	if (!list)
-//		return (NULL);
-//	list->content = content;
-//	list->next = NULL;
-//	return (list);
-//}
-
-void	*ft_lst_last(t_ps *lst)
-{
-	if (lst == NULL)
-	{
-		return (lst);
-	}
-	while (lst->next != NULL)
-	{
-		lst = lst->next;
-	}
-	return (lst);
-}
-
-void	ft_lst_back(t_ps **lst, t_ps *new)
-{
-	t_ps	*tmp;
-
-	if (*lst == NULL)
-	{
-		*lst = new;
-	}
-	else
-	{
-		tmp = ft_lst_last(*(lst));
-		tmp->next = new;
-	}
-}
-
-void ft_lstajouttest(t_ps **start, int i)
+void ft_lst_addfirst(t_ps **start, int i)
 {
 	t_ps *tmp;
 	tmp = (t_ps *)malloc(sizeof(t_ps));
@@ -99,19 +60,81 @@ void ft_lstajouttest(t_ps **start, int i)
 	*start = tmp;
 }
 
-void ft_lstendajouttest(t_ps2 **start2, int i)
+void ft_lst_addlast(t_ps2 **start2, int i)
 {
+	t_ps2 *tmp;
 	t_ps2 *tmp2;
-	if (start2 == NULL)
+
+	tmp = (t_ps2 *)malloc(sizeof(t_ps2));
+	if (!tmp)
 		return ;
+	tmp->data2 = i;
+	tmp->next = NULL;
 	tmp2 = *start2;
+	if (*start2 == NULL)
+	{
+		*start2 = tmp;
+		return ;
+	}
 	while (tmp2->next != NULL)
 		tmp2 = tmp2->next;
-	tmp2->next = (t_ps2 *)malloc(sizeof(t_ps2));
-	if (!tmp2->next)
+	tmp2->next = tmp;
+	return ;
+}
+
+/* void *ft_lstlast2(t_ps2 *lst)
+{
+	while(lst != NULL)
+	{
+		if (lst->next == NULL)
+			return (lst);
+		lst = lst->next;
+	}
+	return (lst);
+}
+
+void ft_lstendajouttest(t_ps2 **start2, int i)
+{
+	t_ps2 *tmp;
+	t_ps2 *tmp2;
+
+	tmp = (t_ps2 *)malloc(sizeof(t_ps2));
+	if (!tmp)
 		return ;
-	tmp2->data2 = i;
-	tmp2->next = NULL;
+	tmp->data2 = i;
+	tmp->next = NULL;
+	printf("END ADD I =:%d\n", i);
+	if (*start2 == NULL)
+		*start2 = tmp;
+	else
+	{
+		tmp2 = ft_lstlast2(*(start2));
+		tmp2->next = tmp;
+	}
+} */
+
+void ft_clean_lst(t_ps **start)
+{
+	t_ps *tmp;
+
+	while (*start != NULL)
+	{
+		tmp = *start;
+		*start = tmp->next;
+		free(tmp);
+	}
+}
+
+void ft_clean_lst2(t_ps2 **start)
+{
+	t_ps2 *tmp;
+
+	while (*start != NULL)
+	{
+		tmp = *start;
+		*start = tmp->next;
+		free(tmp);
+	}
 }
 
 int	main(int argc, char **argv)
@@ -119,7 +142,6 @@ int	main(int argc, char **argv)
 	int	i[argc];
 	int	j;
 
-//	t_ps	ps_list;
 	t_ps	*start = NULL;
 	t_ps2	*start2 = NULL;
 
@@ -127,20 +149,15 @@ int	main(int argc, char **argv)
 	while (++j < argc - 1)
 	{
 		i[j] = ft_atoi(argv[j + 1]);
-		ft_lstajouttest(&start, i[j]);
 		if (((ft_strlen(argv[j + 1]) > 11) || (i[j] > INT_MAX) || (i[j] < INT_MIN)))
 		{
 			ft_printf("Error\n");
 			return (0);
 		}
+		ft_lst_addfirst(&start, i[j]);
+		ft_lst_addlast(&start2, i[j]);
+		
 	}
-	printf("J:%d", j);
-	j = -1;
-	while (++j < argc - 1)
-	{
-		ft_lstendajouttest(&start2, i[j]);
-	}
-
 	j = 0;
 	if (argc <= 4)
 	{
@@ -148,20 +165,25 @@ int	main(int argc, char **argv)
 		{
 			if (j == argc - 2)
 			{
-				ft_printf("PS:%d", ft_push_swap(i[1]));
-				ft_printlst(start);
-//				ft_printlst2(start2);
+				ft_printf("PS1:%d", ft_push_swap(i[j]));
+				ft_printlst(&start);
+				ft_printlst2(start2);
+				ft_printf("\n");
 			}
 			else
 			{
-				ft_printf("PS:%d\n", ft_push_swap(i[j]));
-				ft_printlst(start);
-				ft_printf("\n");
-//				ft_printlst2(start2);
+				ft_printf("PS2:%d", ft_push_swap(i[j]));
+				ft_printlst(&start);
+				ft_printlst2(start2);
 				ft_printf("\n");
 			}
 			j++;
 		}
+	}
+	if (j == argc - 1)
+	{
+		ft_clean_lst(&start);
+		ft_clean_lst2(&start2);
 	}
 	return 0;
 }
