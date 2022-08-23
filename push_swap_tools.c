@@ -1,181 +1,171 @@
-void	ft_sa(int *a)
-{
-	int	tmp;
+#include "push_swap.h"
 
-	if (!a || !a[0] || !a[1])
-		return;
-	tmp = a[1];
-	a[1] = a[0];
-	a[0] = tmp;
+void	ft_sa(t_ps **lst)
+{
+	int a;
+	int b;
+
+	if (!*lst || !(*lst)->data || !(*lst)->next)
+		return ;
+	a = (*lst)->next->data;
+	b = (*lst)->data;
+	(*lst)->data = a;
+	(*lst)->next->data = b;
 }
 
-void	ft_sb(int *b)
+void	ft_sb(t_ps2 **lst)
 {
-	int	tmp;
+	int a;
+	int b;
 
-	if (!b || !b[0] || !b[1])
-		return;
-	tmp = b[1];
-	b[1] = b[0];
-	b[0] = tmp;
+	if (!*lst || !(*lst)->data || !(*lst)->next)
+		return ;
+	a = (*lst)->next->data;
+	b = (*lst)->data;
+	(*lst)->data = a;
+	(*lst)->next->data = b;
 }
 
-void	ft_ss(int *a, int *b)
+void	ft_ss(t_ps **lst, t_ps2 **lst2)
 {
-	ft_sa(a);
-	ft_sb(b);
+	ft_sa(lst);
+	ft_sb(lst2);
 }
 
-void	ft_pa(int *a, int *b)
+void	ft_pa(t_ps **lst, t_ps2 **lst2)
 {
-	int	tmp;
-	int	tmp2;
-	int	i;
+	t_ps *tmp;
+	t_ps2 *tmp2;
 
-	if (!b[0] || !b)
+	if (!*lst2)
 		return;
-	tmp = a[0];
-	a[0] = b[0];
-	i = 0;
-	while (a[++i])
+	tmp = (t_ps *)malloc(sizeof(t_ps));
+	if (!tmp)
+		return ;
+	tmp2 = *lst2;
+	tmp->data = tmp2->data;
+	tmp->next = *lst;
+	*lst = tmp;
+	*lst2 = tmp2->next;
+	free(tmp2);
+}
+
+void	ft_pb(t_ps **lst, t_ps2 **lst2)
+{
+	t_ps *tmp;
+	t_ps2 *tmp2;
+
+	if (!*lst)
+		return;
+	tmp2 = (t_ps2 *)malloc(sizeof(t_ps2));
+	if (!tmp2)
+		return ;
+	tmp = *lst;
+	tmp2->data = tmp->data;
+	tmp2->next = *lst2;
+	*lst2 = tmp2;
+	*lst = tmp->next;
+	free(tmp);
+}
+
+void	ft_ra(t_ps **lst)
+{
+	t_ps *tmp;
+	int i;
+	int j;
+
+	if (!*lst && !(*lst)->next)
+		return ;
+	tmp = *lst;
+	i = tmp->data;
+	while (tmp->next)
 	{
-		tmp2 = a[i];
-		a[i] = tmp;
-		tmp = tmp2;
+		j = tmp->next->data;
+		tmp->data = j;
+		tmp = tmp->next;
 	}
-	/*
-	 j = 0;
-	 while (!a[j])
-	 	j++;
-	while (i < j + 1)
-	 */
+	tmp->data = i;
+	return ;
 }
 
-void	ft_pb(int *a, int *b)
+void	ft_rb(t_ps2 **lst)
 {
-	int	tmp;
-	int	tmp2;
-	int	i;
+	t_ps2 *tmp;
+	int i;
+	int j;
 
-	if (!a[0] || !a)
-		return;
-	tmp = b[0];
-	b[0] = a[0];
-	i = 0;
-	while (b[++i])
+	if (!*lst && !(*lst)->next)
+		return ;
+	tmp = *lst;
+	i = tmp->data;
+	while (tmp->next)
 	{
-		tmp2 = b[i];
-		b[i] = tmp;
-		tmp = tmp2;
+		j = tmp->next->data;
+		tmp->data = j;
+		tmp = tmp->next;
 	}
-	/*
-	 j = 0;
-	 while (!b[j])
-	 	j++;
-	while (i < j + 1)
-	 */
+	tmp->data = i;
+	return ;
 }
 
-void	ft_ra(int *a)
+void	ft_rr(t_ps **lst, t_ps2 **lst2)
+{
+	if (*lst)
+		ft_ra(lst);
+	if (*lst2)
+		ft_rb(lst2);
+}
+
+void	ft_rra(t_ps **lst)
 {
 	int	i;
 	int	j;
-	int	tmp;
+	int	k;
+	t_ps	*tmp;
 
-	if (!a)
+	if (!*lst && !(*lst)->next)
 		return ;
-	i = 0;
-	while (a[i])
-		i++;
-	if (i < 2)
-		return ;
-	j = -1;
-	tmp = a[0];
-	while (++j < i)
+	tmp = *lst;
+	j = tmp->data;
+	while (tmp->next)
 	{
-		a[j] = a[j + 1];
+		if (!tmp->next->next)
+			i = tmp->next->data;
+		tmp = tmp->next;
+		k = tmp->data;
+		tmp->data = j;
+		j = k;
 	}
-	a[j] = tmp;
+	(*lst)->data = i;
 }
 
-void	ft_rb(int *b)
+void	ft_rrb(t_ps2 **lst)
 {
 	int	i;
 	int	j;
-	int	tmp;
+	int	k;
+	t_ps2	*tmp;
 
-	if (!b)
+	if (!*lst && !(*lst)->next)
 		return ;
-	i = 0;
-	while (b[i])
-		i++;
-	if (i < 2)
-		return ;
-	j = -1;
-	tmp = b[0];
-	while (++j < i)
+	tmp = *lst;
+	j = tmp->data;
+	while (tmp->next)
 	{
-		b[j] = b[j + 1];
+		if (!tmp->next->next)
+			i = tmp->next->data;
+		tmp = tmp->next;
+		k = tmp->data;
+		tmp->data = j;
+		j = k;
 	}
-	b[j] = tmp;
+	(*lst)->data = i;
 }
 
-void	ft_rr(int *a, int *b)
+void	ft_rrr(t_ps **lst, t_ps2 **lst2)
 {
-	if (!a || !b)
-		return ;
-	ft_ra(a);
-	ft_rb(b);
-}
-
-void	ft_rra(int *a)
-{
-	int	i;
-	int	j;
-	int	tmp;
-
-	if (!a)
-		return ;
-	i = 0;
-	while (!a[i])
-		i++;
-	if (i < 2)
-		return ;
-	tmp = a[i];
-	j = -1;
-	while (a[++j])
-	{
-		a[j  + 1] = a[j];
-	}
-	a[0] = tmp;
-}
-
-void	ft_rrb(int *b)
-{
-	int	i;
-	int	j;
-	int	tmp;
-
-	if (!b)
-		return ;
-	i = 0;
-	while (!b[i])
-		i++;
-	if (i < 2)
-		return ;
-	tmp = b[i];
-	j = -1;
-	while (b[++j])
-	{
-		b[j  + 1] = b[j];
-	}
-	b[0] = tmp;
-}
-
-void	ft_rrr(int *a, int *b)
-{
-	if (!a || !b)
-		return ;
-	ft_rra(a);
-	ft_rrb(b);
+	if (*lst)
+		ft_rra(lst);
+	if (*lst2)
+	ft_rrb(lst2);
 }

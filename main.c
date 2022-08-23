@@ -1,22 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <limits.h>
-#include "libft/includes/libft.h"
-#include "libft/includes/ft_printf.h"
+#include "push_swap.h"
 
 //#define NB 3
 
-typedef struct	ps_list
-{
-	int 			data;
-	struct ps_list	*next;
-}	t_ps;
 
-typedef struct	ps_list2
-{
-	int 			data2;
-	struct ps_list2	*next;
-}	t_ps2;
 
 int	ft_push_swap(int i)
 {
@@ -28,30 +17,40 @@ int	ft_push_swap(int i)
 void	ft_printlst(t_ps **start)
 {
 	t_ps *tmp;
+
 	tmp = *start;
-	ft_printf("\n");
 	while (tmp)
 	{
 		ft_printf("%d ", tmp->data);
 		tmp = tmp->next;
 	}
+	ft_printf("\n");
 }
 
 void	ft_printlst2(t_ps2 *start2)
 {
 	t_ps2 *tmp;
+
 	tmp = start2;
-	ft_printf("\n");
 	while (tmp)
 	{
-		ft_printf("%d ", tmp->data2);
+		ft_printf("%d ", tmp->data);
 		tmp = tmp->next;
 	}
+	ft_printf("\n");
 }
 
-void ft_lst_addfirst(t_ps **start, int i)
+void ft_lst_addfirst(t_ps **start, const char *nptr)
 {
 	t_ps *tmp;
+	int i;
+
+	i = ft_atoi(nptr);
+	if (((ft_strlen(nptr) > 11) || (i > INT_MAX) || (i < INT_MIN)))
+	{
+		ft_printf("Error\n");
+		return ;
+	}
 	tmp = (t_ps *)malloc(sizeof(t_ps));
 	if (!tmp)
 		return ;
@@ -60,58 +59,38 @@ void ft_lst_addfirst(t_ps **start, int i)
 	*start = tmp;
 }
 
-void ft_lst_addlast(t_ps2 **start2, int i)
+void	ft_lst_addlast(t_ps **lst, const char *nptr)
 {
-	t_ps2 *tmp;
-	t_ps2 *tmp2;
+	t_ps *tmp;
+	t_ps *tmp2;
+	int i;
+	int j;
 
-	tmp = (t_ps2 *)malloc(sizeof(t_ps2));
-	if (!tmp)
-		return ;
-	tmp->data2 = i;
-	tmp->next = NULL;
-	tmp2 = *start2;
-	if (*start2 == NULL)
+	j = INT_MIN;
+	ft_printf("ERRRRRRRROOORRR%d\n", j);
+	i = ft_atoi(nptr);
+	ft_printf("ERRRRRRRROOORRR%d\n", i);
+	if (ft_strlen(nptr) > 11 || (i > INT_MAX || i < INT_MIN))
 	{
-		*start2 = tmp;
+		ft_printf("Error\n");
 		return ;
 	}
-	while (tmp2->next != NULL)
+	tmp = (t_ps *)malloc(sizeof (t_ps));
+	if (!tmp)
+		return ;
+	tmp->data = i;
+	tmp->next = NULL;
+	tmp2 = *lst;
+	if (!*lst)
+	{
+		*lst = tmp;
+		return ;
+	}
+	while (tmp2->next)
 		tmp2 = tmp2->next;
 	tmp2->next = tmp;
 	return ;
 }
-
-/* void *ft_lstlast2(t_ps2 *lst)
-{
-	while(lst != NULL)
-	{
-		if (lst->next == NULL)
-			return (lst);
-		lst = lst->next;
-	}
-	return (lst);
-}
-
-void ft_lstendajouttest(t_ps2 **start2, int i)
-{
-	t_ps2 *tmp;
-	t_ps2 *tmp2;
-
-	tmp = (t_ps2 *)malloc(sizeof(t_ps2));
-	if (!tmp)
-		return ;
-	tmp->data2 = i;
-	tmp->next = NULL;
-	printf("END ADD I =:%d\n", i);
-	if (*start2 == NULL)
-		*start2 = tmp;
-	else
-	{
-		tmp2 = ft_lstlast2(*(start2));
-		tmp2->next = tmp;
-	}
-} */
 
 void ft_clean_lst(t_ps **start)
 {
@@ -137,53 +116,161 @@ void ft_clean_lst2(t_ps2 **start)
 	}
 }
 
+/* void ft_indexlst(t_ps **lst, int count)
+{
+	int		i;
+	t_ps	tmp;
+
+	if (!*lst)
+		return ;
+	tmp = *lst;
+	i = 0;
+	while (i < index)
+	{
+		if (tmp->data < tmp->next->data)
+			tmp->index = i + 1;
+	}
+} */
+
+/* int ft_checklst(t_ps **lst, int count)
+{
+	int		j;
+	int		k;
+	t_ps	*tmp;
+	t_ps	*tmp2;
+
+	if (!*lst)
+		return (0);
+	tmp = *lst;
+	k = 0;
+	ft_printf("\033[0;32mCOUNT : %d\033[0m\n", count);
+	while (count > 0)
+	{
+		while (tmp->next)
+		{
+			j = tmp->data;
+			tmp2 = tmp;
+			while (tmp2->next)
+			{
+				tmp2 = tmp2->next;
+				if (j != tmp2->data)
+					k++;
+			}
+			tmp = tmp->next;
+		}
+		count--;
+	}
+	return (k);
+} */
+
+int ft_checklst(t_ps **lst, int count)
+{
+	int		j;
+	t_ps	*tmp;
+	t_ps	*tmp2;
+
+	if (!*lst)
+		return (0);
+	tmp = *lst;
+	while (count > 0)
+	{
+		while (tmp->next)
+		{
+			j = tmp->data;
+			tmp2 = tmp;
+			while (tmp2->next)
+			{
+				tmp2 = tmp2->next;
+				if (j == tmp2->data)
+					return (0);
+			}
+			tmp = tmp->next;
+		}
+		count--;
+	}
+	return (1);
+}
+
 int	main(int argc, char **argv)
 {
-	int	i[argc];
 	int	j;
-
-	t_ps	*start = NULL;
-	t_ps2	*start2 = NULL;
+	t_ps	*stack = NULL;
+	t_ps2	*stack2 = NULL;
 
 	j = -1;
-	while (++j < argc - 1)
+	if (argc == 3)
 	{
-		i[j] = ft_atoi(argv[j + 1]);
-		if (((ft_strlen(argv[j + 1]) > 11) || (i[j] > INT_MAX) || (i[j] < INT_MIN)))
+		while (++j < argc - 1)
 		{
-			ft_printf("Error\n");
+			ft_lst_addlast(&stack, argv[j + 1]);
+		}
+		ft_printf("\033[0;32mLa Liste AVANT modif :\033[0m\n");
+		ft_printlst(&stack);
+		if (ft_checklst(&stack, argc - 1) == 0)
+		{
+			ft_printf("\033[0;32mDoublon dans la liste!!\033[0m\n");
+			ft_clean_lst(&stack);
 			return (0);
 		}
-		ft_lst_addfirst(&start, i[j]);
-		ft_lst_addlast(&start2, i[j]);
-		
+		if (stack->data > stack->next->data)
+			ft_sa(&stack);
+		ft_printf("\033[0;32mLa Liste APRES modif :\033[0m\n");
+		ft_printlst(&stack);
+		ft_clean_lst(&stack);
 	}
-	j = 0;
-	if (argc <= 4)
+	j = -1;
+	if (argc == 4)
 	{
-		while (i[j] && j < argc - 1)
+		while (++j < argc - 1)
 		{
-			if (j == argc - 2)
-			{
-				ft_printf("PS1:%d", ft_push_swap(i[j]));
-				ft_printlst(&start);
-				ft_printlst2(start2);
-				ft_printf("\n");
-			}
-			else
-			{
-				ft_printf("PS2:%d", ft_push_swap(i[j]));
-				ft_printlst(&start);
-				ft_printlst2(start2);
-				ft_printf("\n");
-			}
-			j++;
+			ft_lst_addlast(&stack, argv[j + 1]);
 		}
+		ft_printf("\033[0;32mLa Liste AVANT modif :\033[0m\n");
+		ft_printlst(&stack);
+		if (ft_checklst(&stack, argc - 1) != argc - 1)
+		{
+			ft_printf("\033[0;32mDoublon dans la liste :\033[0m\n");
+			ft_clean_lst(&stack);
+			return (0);
+		}
+//		ft_rra(&stack);
+		ft_rrr(&stack,&stack2);
+		ft_printf("\033[0;32mLa Liste APRES modif :\033[0m\n");
+		ft_printlst(&stack);
+		ft_clean_lst(&stack);
 	}
-	if (j == argc - 1)
+	j = -1;
+	if (argc > 4)
 	{
+		while (++j < argc - 1)
+		{
+			ft_lst_addlast(&stack, argv[j + 1]);
+		}
+		ft_printf("\033[0;32mLa Liste AVANT modif :\033[0m\n");
+		ft_printlst(&stack);
+//		ft_rra(&stack);
+		ft_rrr(&stack,&stack2);
+		ft_printf("\033[0;32mLa Liste APRES modif :\033[0m\n");
+		ft_printlst(&stack);
+		ft_clean_lst(&stack);
+	}
+/* 	if (argc > 1)
+	{
+		while (++j < argc - 1)
+		{
+			ft_lst_addfirst(&start, argv[j + 1]);
+			ft_lst_addlast(&start2, argv[j + 1]);
+		}
+		ft_printf("\033[0;32mLa Liste dans les 2 sens AVANT modif :\033[0m\n");
+		ft_printlst(&start);
+		ft_printlst2(start2);
+//		ft_rra(&start);
+		ft_rrr(&start,&start2);
+		ft_printf("\033[0;32mLa Liste dans les 2 sens APRES modif :\033[0m\n");
+		ft_printlst(&start);
+		ft_printlst2(start2);
 		ft_clean_lst(&start);
 		ft_clean_lst2(&start2);
-	}
+	} */
 	return 0;
 }
