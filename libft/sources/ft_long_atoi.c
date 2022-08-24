@@ -1,50 +1,44 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_itoa.c                                          :+:      :+:    :+:   */
+/*   ft_long_atoi.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chillion <chillion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/17 11:50:29 by chillion          #+#    #+#             */
-/*   Updated: 2022/08/24 11:07:16 by chillion         ###   ########.fr       */
+/*   Created: 2022/05/03 18:15:59 by chillion          #+#    #+#             */
+/*   Updated: 2022/08/24 11:36:13 by chillion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_itoa(int n)
+long int	ft_long_atoi(const char *nptr)
 {
-	int			i;
+	int			x;
+	int			y;
 	long int	nb;
-	char		*str;
 
-	nb = n;
-	i = ft_nb_size(nb, "0123456789");
-	str = (char *)malloc(i + 1);
-	if (str == NULL)
-		return (NULL);
-	str[i--] = '\0';
-	if (nb == 0)
-		str[0] = '0';
-	if (nb < 0)
+	x = 0;
+	y = 1;
+	nb = 0;
+	while ((nptr[x] >= 9 && nptr[x] <= 13) || nptr[x] == ' ')
+		x++;
+	if (nptr[x] == '+' || nptr[x] == '-')
 	{
-		str[0] = '-';
-		nb *= -1;
+		if (nptr[x] == '-')
+		{
+			y *= -1;
+		}
+		x++;
 	}
-	while (nb != 0)
+	while (nptr[x] >= '0' && nptr[x] <= '9')
 	{
-		str[i] = nb % 10 + 48;
-		nb = nb / 10;
-		i--;
+		nb = nb * 10 + (nptr[x] - 48);
+		x++;
 	}
-	return (str);
+	nb *= y;
+	if (nb > INT_MAX || nb < INT_MIN)
+		return (999999999999);
+	else
+		return (nb);
 }
-/*
-int main()
-{
-	int i;
-
-	i = -555465;
-	printf("%s", ft_itoa(i));
-}
-*/

@@ -14,11 +14,41 @@ int	ft_push_swap(int i)
 	return (i);
 }
 
-void	ft_printlst(t_ps **start)
+void	ft_printlst(t_ps **start, t_ps2 **start2)
+{
+	t_ps *tmp;
+	t_ps2 *tmp2;
+
+	tmp = *start;
+	tmp2 = *start2;
+	ft_printf(" Valeur A - Index A - Valeur B - Index B \n");
+	while (tmp)
+	{
+		if (tmp2)
+		{
+			if (tmp->next)
+				ft_printf(" %d | %d | %d | %d \n", tmp->data, tmp->index, tmp2->data, tmp2->index);
+			else
+				ft_printf(" %d | %d | %d | %d ", tmp->data, tmp->index, tmp2->data, tmp2->index);
+			tmp2 = tmp2->next;
+		}
+		else
+		{
+			if (tmp->next)
+				ft_printf(" %d | %d | - | - \n", tmp->data, tmp->index);
+			else
+				ft_printf(" %d | %d | - | - ", tmp->data, tmp->index);
+		}
+		tmp = tmp->next;
+	}
+	ft_printf("\n");
+}
+
+void	ft_printlsttried(t_ps *start)
 {
 	t_ps *tmp;
 
-	tmp = *start;
+	tmp = start;
 	while (tmp)
 	{
 		ft_printf("%d ", tmp->data);
@@ -40,17 +70,10 @@ void	ft_printlst2(t_ps2 *start2)
 	ft_printf("\n");
 }
 
-void ft_lst_addfirst(t_ps **start, const char *nptr)
+void ft_lst_addfirst(t_ps **start, int i)
 {
 	t_ps *tmp;
-	int i;
 
-	i = ft_atoi(nptr);
-	if (((ft_strlen(nptr) > 11) || (i > INT_MAX) || (i < INT_MIN)))
-	{
-		ft_printf("Error\n");
-		return ;
-	}
 	tmp = (t_ps *)malloc(sizeof(t_ps));
 	if (!tmp)
 		return ;
@@ -59,26 +82,16 @@ void ft_lst_addfirst(t_ps **start, const char *nptr)
 	*start = tmp;
 }
 
-void	ft_lst_addlast(t_ps **lst, const char *nptr)
+void	ft_lst_addlast(t_ps **lst, int i)
 {
 	t_ps *tmp;
 	t_ps *tmp2;
-	int i;
-	int j;
 
-	j = INT_MIN;
-	ft_printf("ERRRRRRRROOORRR%d\n", j);
-	i = ft_atoi(nptr);
-	ft_printf("ERRRRRRRROOORRR%d\n", i);
-	if (ft_strlen(nptr) > 11 || (i > INT_MAX || i < INT_MIN))
-	{
-		ft_printf("Error\n");
-		return ;
-	}
 	tmp = (t_ps *)malloc(sizeof (t_ps));
 	if (!tmp)
 		return ;
 	tmp->data = i;
+	tmp->index = 1;
 	tmp->next = NULL;
 	tmp2 = *lst;
 	if (!*lst)
@@ -191,6 +204,133 @@ int ft_checklst(t_ps **lst, int count)
 	return (1);
 }
 
+void ft_push_list(t_ps **lst, const char *nptr)
+{
+	long int	i;
+
+	i = ft_long_atoi(nptr);
+	if (i == 999999999999)
+	{
+		ft_printf("\033[0;31mError\033[0m\n");
+		ft_clean_lst(lst);
+		return ;
+	}
+	ft_lst_addlast(lst, i);
+}
+
+int ft_tried_list(t_ps **lst)
+{
+	t_ps	*tmp;
+
+	tmp = *lst;
+	while (tmp->next)
+	{
+		if (tmp->data > tmp->next->data)
+			return (1);
+		tmp = tmp->next;
+	}
+	return (0);
+}
+
+void ft_control_list(t_ps **stack, const char *nptr, int argc)
+{
+	ft_push_list(stack, nptr);
+	if (*stack)
+	{
+		ft_printf("\033[0;31mTEST\033[0m\n");
+//		if (ft_checklst(stack, argc - 1) == 0 || ft_tried_list(stack) == 0) OK A REMETTRE AVNT PUSH
+		if (ft_checklst(stack, argc - 1) == 0)
+		{
+			ft_printf("\033[0;31mDoublon dans la liste!!\033[0m\n");
+			ft_clean_lst(stack);
+			return ;
+		}
+	}
+}
+
+/* void	ft_index_list(t_ps **lst, int argc)
+{
+	t_ps *tmp;
+	t_ps *tmp2;
+	int i;
+
+	i = -1;
+	tmp = *lst;
+	tmp2 = *lst;
+	while (argc > ++i)
+	{
+		if (i == 0)
+			tmp->index = 1;
+		while (tmp->next)
+		{
+			while (tmp2->next){
+				if (tmp->data > tmp2->data && tmp->index < tmp2->index)
+				{
+					tmp2->next->index = tmp->index;
+					tmp->index = tmp->index + 1;
+				}
+				if (tmp2->next->index == 0)
+					tmp2->next->index = tmp2->index + 1;
+				tmp2 = tmp2->next;
+			}
+			tmp = tmp->next;
+			tmp2 = tmp;
+		}
+		tmp = *lst;
+	}
+} */
+
+void	ft_index_list(t_ps **lst)
+{
+	t_ps *tmp;
+	t_ps *tmp2;
+
+	tmp = *lst;
+	tmp2 = *lst;
+	while (tmp2)
+	{
+		while (tmp)
+		{
+			if (tmp2->data > tmp->data)
+				tmp2->index = tmp2->index + 1;
+			tmp = tmp->next;
+		}
+		tmp = *lst;
+		tmp2 = tmp2->next;
+	}
+}
+
+void ft_tri_list(t_ps **stack, t_ps2 **stack2, int argc)
+{
+	ft_printf("\033[0;32mLa Liste AVANT modif :\033[0m\n");
+	ft_printlst(stack, stack2);
+	if (argc == 3 && (*stack)->data > (*stack)->next->data)
+	{
+		ft_printf("\033[0;36msa\033[0m\n");
+		ft_sa(stack);
+	}
+	if (argc >= 5)
+	{
+		ft_index_list(stack);
+		ft_pb(stack, stack2);
+//		ft_sa(stack);
+/* 		ft_pb(stack, stack2);
+		ft_pa(stack, stack2);
+		ft_pb(stack, stack2);
+		ft_pb(stack, stack2);
+		ft_pb(stack, stack2);
+		ft_ss(stack, stack2);
+		ft_rr(stack, stack2);
+		ft_rrr(stack, stack2);
+		ft_rrr(stack, stack2);
+		ft_rrr(stack, stack2); */
+	}
+	ft_printf("\033[0;32mLa Liste APRES modif :\033[0m\n");
+	ft_printlst(stack, stack2);
+	ft_clean_lst(stack);
+	ft_clean_lst2(stack2);
+}
+
 int	main(int argc, char **argv)
 {
 	int	j;
@@ -198,79 +338,23 @@ int	main(int argc, char **argv)
 	t_ps2	*stack2 = NULL;
 
 	j = -1;
-	if (argc == 3)
+	ft_printf("\033[0;32mINT_MAX :%d , INT_MIN :%d\033[0m\n", INT_MAX, INT_MIN);
+	if (argc > 2)
 	{
 		while (++j < argc - 1)
 		{
-			ft_lst_addlast(&stack, argv[j + 1]);
+			ft_control_list(&stack, argv[j + 1], argc - 1);
+			if (!stack)
+				return (0);
 		}
-		ft_printf("\033[0;32mLa Liste AVANT modif :\033[0m\n");
-		ft_printlst(&stack);
-		if (ft_checklst(&stack, argc - 1) == 0)
-		{
-			ft_printf("\033[0;32mDoublon dans la liste!!\033[0m\n");
-			ft_clean_lst(&stack);
-			return (0);
-		}
-		if (stack->data > stack->next->data)
-			ft_sa(&stack);
-		ft_printf("\033[0;32mLa Liste APRES modif :\033[0m\n");
-		ft_printlst(&stack);
-		ft_clean_lst(&stack);
-	}
-	j = -1;
-	if (argc == 4)
-	{
-		while (++j < argc - 1)
-		{
-			ft_lst_addlast(&stack, argv[j + 1]);
-		}
-		ft_printf("\033[0;32mLa Liste AVANT modif :\033[0m\n");
-		ft_printlst(&stack);
-		if (ft_checklst(&stack, argc - 1) != argc - 1)
-		{
-			ft_printf("\033[0;32mDoublon dans la liste :\033[0m\n");
-			ft_clean_lst(&stack);
-			return (0);
-		}
-//		ft_rra(&stack);
-		ft_rrr(&stack,&stack2);
-		ft_printf("\033[0;32mLa Liste APRES modif :\033[0m\n");
-		ft_printlst(&stack);
-		ft_clean_lst(&stack);
-	}
-	j = -1;
-	if (argc > 4)
-	{
-		while (++j < argc - 1)
-		{
-			ft_lst_addlast(&stack, argv[j + 1]);
-		}
-		ft_printf("\033[0;32mLa Liste AVANT modif :\033[0m\n");
-		ft_printlst(&stack);
-//		ft_rra(&stack);
-		ft_rrr(&stack,&stack2);
-		ft_printf("\033[0;32mLa Liste APRES modif :\033[0m\n");
-		ft_printlst(&stack);
-		ft_clean_lst(&stack);
-	}
-/* 	if (argc > 1)
-	{
-		while (++j < argc - 1)
-		{
-			ft_lst_addfirst(&start, argv[j + 1]);
-			ft_lst_addlast(&start2, argv[j + 1]);
-		}
-		ft_printf("\033[0;32mLa Liste dans les 2 sens AVANT modif :\033[0m\n");
-		ft_printlst(&start);
-		ft_printlst2(start2);
-//		ft_rra(&start);
-		ft_rrr(&start,&start2);
-		ft_printf("\033[0;32mLa Liste dans les 2 sens APRES modif :\033[0m\n");
-		ft_printlst(&start);
-		ft_printlst2(start2);
-		ft_clean_lst(&start);
-		ft_clean_lst2(&start2);
-	} */
+		if (ft_tried_list(&stack) == 0 && stack) // Temporaire
+		{ // Temporaire
+			ft_printf("\033[0;31mListe triee!!\033[0m\n"); // Temporaire
+			ft_printlsttried(stack); // Temporaire
+			ft_clean_lst(&stack); // Temporaire
+		} // Temporaire
+		if (stack)
+			ft_tri_list(&stack, &stack2, argc);
+	}	
 	return 0;
 }

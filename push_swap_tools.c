@@ -2,28 +2,30 @@
 
 void	ft_sa(t_ps **lst)
 {
-	int a;
-	int b;
+	t_ps *tmp;
+	t_ps *tmp2;
 
-	if (!*lst || !(*lst)->data || !(*lst)->next)
+	if (!*lst || !(*lst)->next)
 		return ;
-	a = (*lst)->next->data;
-	b = (*lst)->data;
-	(*lst)->data = a;
-	(*lst)->next->data = b;
+	tmp = *lst;
+	tmp2 = tmp->next;
+	tmp2->next = tmp;
+	tmp->next = tmp->next->next;
+	*lst = tmp2;
 }
 
 void	ft_sb(t_ps2 **lst)
 {
-	int a;
-	int b;
+	t_ps2 *tmp;
+	t_ps2 *tmp2;
 
-	if (!*lst || !(*lst)->data || !(*lst)->next)
+	if (!*lst || !(*lst)->next)
 		return ;
-	a = (*lst)->next->data;
-	b = (*lst)->data;
-	(*lst)->data = a;
-	(*lst)->next->data = b;
+	tmp = *lst;
+	tmp2 = tmp->next;
+	tmp2->next = tmp;
+	tmp->next = tmp->next->next;
+	*lst = tmp2;
 }
 
 void	ft_ss(t_ps **lst, t_ps2 **lst2)
@@ -44,7 +46,11 @@ void	ft_pa(t_ps **lst, t_ps2 **lst2)
 		return ;
 	tmp2 = *lst2;
 	tmp->data = tmp2->data;
-	tmp->next = *lst;
+	tmp->index = tmp2->index;
+	if (!*lst)
+		tmp->next = NULL;
+	else
+		tmp->next = *lst;
 	*lst = tmp;
 	*lst2 = tmp2->next;
 	free(tmp2);
@@ -57,14 +63,19 @@ void	ft_pb(t_ps **lst, t_ps2 **lst2)
 
 	if (!*lst)
 		return;
-	tmp2 = (t_ps2 *)malloc(sizeof(t_ps2));
+/* 	tmp2 = (t_ps2 *)malloc(sizeof(t_ps2));
 	if (!tmp2)
-		return ;
+		return ; */
 	tmp = *lst;
-	tmp2->data = tmp->data;
-	tmp2->next = *lst2;
+	tmp2 = *lst2;
+/* 	tmp2->data = tmp->data;
+	tmp2->index = tmp->index; */
+	if (!*lst2)
+		tmp2->next = NULL;
+	else
+		tmp2->next = *lst2;
 	*lst2 = tmp2;
-	*lst = tmp->next;
+	lst = &tmp->next;
 	free(tmp);
 }
 
