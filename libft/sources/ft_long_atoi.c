@@ -6,7 +6,7 @@
 /*   By: chillion <chillion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 18:15:59 by chillion          #+#    #+#             */
-/*   Updated: 2022/08/24 11:36:13 by chillion         ###   ########.fr       */
+/*   Updated: 2022/08/25 14:42:22 by chillion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ long int	ft_long_atoi(const char *nptr)
 		}
 		x++;
 	}
+	if (!(nptr[x] >= '0' && nptr[x] <= '9'))
+		return (999999999999);
 	while (nptr[x] >= '0' && nptr[x] <= '9')
 	{
 		nb = nb * 10 + (nptr[x] - 48);

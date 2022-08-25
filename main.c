@@ -3,10 +3,6 @@
 #include <limits.h>
 #include "push_swap.h"
 
-//#define NB 3
-
-
-
 int	ft_push_swap(int i)
 {
 	if (!i)
@@ -14,32 +10,82 @@ int	ft_push_swap(int i)
 	return (i);
 }
 
-void	ft_printlst(t_ps **start, t_ps2 **start2)
+/* void	ft_printlsts(t_ps **start, t_ps **start2)
 {
 	t_ps *tmp;
-	t_ps2 *tmp2;
+	t_ps *tmp2;
 
 	tmp = *start;
 	tmp2 = *start2;
 	ft_printf(" Valeur A - Index A - Valeur B - Index B \n");
-	while (tmp)
+	while (tmp || tmp2)
 	{
-		if (tmp2)
+		if (tmp2 && tmp)
 		{
-			if (tmp->next)
+			if (tmp->next || tmp2->next)
 				ft_printf(" %d | %d | %d | %d \n", tmp->data, tmp->index, tmp2->data, tmp2->index);
 			else
 				ft_printf(" %d | %d | %d | %d ", tmp->data, tmp->index, tmp2->data, tmp2->index);
+			tmp = tmp->next;
 			tmp2 = tmp2->next;
 		}
-		else
+		else if (!tmp2)
 		{
 			if (tmp->next)
 				ft_printf(" %d | %d | - | - \n", tmp->data, tmp->index);
 			else
 				ft_printf(" %d | %d | - | - ", tmp->data, tmp->index);
+			tmp = tmp->next;
 		}
-		tmp = tmp->next;
+		else if (!tmp)
+		{
+			if (tmp2->next)
+				ft_printf(" - | - | %d | %d \n", tmp2->data, tmp2->index);
+			else
+				ft_printf(" - | - | %d | %d ", tmp2->data, tmp2->index);
+			tmp2 = tmp2->next;
+		}
+	}
+	ft_printf("\n");
+} */
+
+void	ft_printlsts(t_ps **start, t_ps **start2)
+{
+	t_ps *tmp;
+	t_ps *tmp2;
+
+	tmp = *start;
+	tmp2 = *start2;
+	ft_printf("\tVal A\t|\tInd A\t|\tPos A\t|\tVal B\t|\tInd B\t|\tPos B\t\n");
+	while (tmp || tmp2)
+	{
+		if (tmp2 && tmp)
+		{
+			if (tmp->next || tmp2->next)
+				ft_printf("\t%d\t|\t%d\t|\t%d\t|\t%d\t|\t%d\t|\t%d\t|\t%d\t|\t%d\t\n",
+				 tmp->data, tmp->index, tmp->pos, tmp->target_pos, tmp2->data, tmp2->index, tmp2->pos, tmp2->target_pos);
+			else
+				ft_printf("\t%d\t|\t%d\t|\t%d\t|\t%d\t|\t%d\t|\t%d\t|\t%d\t|\t%d\t",
+				 tmp->data, tmp->index, tmp->pos, tmp->target_pos, tmp2->data, tmp2->index, tmp2->pos, tmp2->target_pos);
+			tmp = tmp->next;
+			tmp2 = tmp2->next;
+		}
+		else if (!tmp2)
+		{
+			if (tmp->next)
+				ft_printf("\t%d\t|\t%d\t|\t%d\t|\t%d\t|\t-\t|\t-\t|\t-\t|\t-\t\n", tmp->data, tmp->index, tmp->pos, tmp->target_pos);
+			else
+				ft_printf("\t%d\t|\t%d\t|\t%d\t|\t%d\t|\t-\t|\t-\t|\t-\t|\t-\t", tmp->data, tmp->index, tmp->pos, tmp->target_pos);
+			tmp = tmp->next;
+		}
+		else if (!tmp)
+		{
+			if (tmp2->next)
+				ft_printf("\t-\t|\t-\t|\t-\t|\t-\t|\t%d\t|\t%d\t|\t%d\t|\t%d\t\n", tmp2->data, tmp2->index, tmp2->pos, tmp2->target_pos);
+			else
+				ft_printf("\t-\t|\t-\t|\t-\t|\t-\t|\t%d\t|\t%d\t|\t%d\t|\t%d\t", tmp2->data, tmp2->index, tmp2->pos, tmp2->target_pos);
+			tmp2 = tmp2->next;
+		}
 	}
 	ft_printf("\n");
 }
@@ -57,11 +103,11 @@ void	ft_printlsttried(t_ps *start)
 	ft_printf("\n");
 }
 
-void	ft_printlst2(t_ps2 *start2)
+void	ft_printlst(t_ps **start)
 {
-	t_ps2 *tmp;
+	t_ps *tmp;
 
-	tmp = start2;
+	tmp = *start;
 	while (tmp)
 	{
 		ft_printf("%d ", tmp->data);
@@ -92,6 +138,8 @@ void	ft_lst_addlast(t_ps **lst, int i)
 		return ;
 	tmp->data = i;
 	tmp->index = 1;
+	tmp->pos = 0; // TMP
+	tmp->target_pos = 0; // TMP
 	tmp->next = NULL;
 	tmp2 = *lst;
 	if (!*lst)
@@ -116,65 +164,6 @@ void ft_clean_lst(t_ps **start)
 		free(tmp);
 	}
 }
-
-void ft_clean_lst2(t_ps2 **start)
-{
-	t_ps2 *tmp;
-
-	while (*start != NULL)
-	{
-		tmp = *start;
-		*start = tmp->next;
-		free(tmp);
-	}
-}
-
-/* void ft_indexlst(t_ps **lst, int count)
-{
-	int		i;
-	t_ps	tmp;
-
-	if (!*lst)
-		return ;
-	tmp = *lst;
-	i = 0;
-	while (i < index)
-	{
-		if (tmp->data < tmp->next->data)
-			tmp->index = i + 1;
-	}
-} */
-
-/* int ft_checklst(t_ps **lst, int count)
-{
-	int		j;
-	int		k;
-	t_ps	*tmp;
-	t_ps	*tmp2;
-
-	if (!*lst)
-		return (0);
-	tmp = *lst;
-	k = 0;
-	ft_printf("\033[0;32mCOUNT : %d\033[0m\n", count);
-	while (count > 0)
-	{
-		while (tmp->next)
-		{
-			j = tmp->data;
-			tmp2 = tmp;
-			while (tmp2->next)
-			{
-				tmp2 = tmp2->next;
-				if (j != tmp2->data)
-					k++;
-			}
-			tmp = tmp->next;
-		}
-		count--;
-	}
-	return (k);
-} */
 
 int ft_checklst(t_ps **lst, int count)
 {
@@ -248,38 +237,6 @@ void ft_control_list(t_ps **stack, const char *nptr, int argc)
 	}
 }
 
-/* void	ft_index_list(t_ps **lst, int argc)
-{
-	t_ps *tmp;
-	t_ps *tmp2;
-	int i;
-
-	i = -1;
-	tmp = *lst;
-	tmp2 = *lst;
-	while (argc > ++i)
-	{
-		if (i == 0)
-			tmp->index = 1;
-		while (tmp->next)
-		{
-			while (tmp2->next){
-				if (tmp->data > tmp2->data && tmp->index < tmp2->index)
-				{
-					tmp2->next->index = tmp->index;
-					tmp->index = tmp->index + 1;
-				}
-				if (tmp2->next->index == 0)
-					tmp2->next->index = tmp2->index + 1;
-				tmp2 = tmp2->next;
-			}
-			tmp = tmp->next;
-			tmp2 = tmp;
-		}
-		tmp = *lst;
-	}
-} */
-
 void	ft_index_list(t_ps **lst)
 {
 	t_ps *tmp;
@@ -300,42 +257,155 @@ void	ft_index_list(t_ps **lst)
 	}
 }
 
-void ft_tri_list(t_ps **stack, t_ps2 **stack2, int argc)
+void	ft_trio_list(t_ps **stack, int argc)
+{
+	if ((*stack)->index == argc - 1)
+	{
+		ft_ra(stack);
+		ft_printf("ra\n");
+	}
+	if ((*stack)->next->index == argc - 1)
+	{
+		ft_rra(stack);
+		ft_printf("rra\n");
+	}
+	if ((*stack)->index > (*stack)->next->index)
+	{
+		ft_sa(stack);
+		ft_printf("sa\n");
+	}
+}
+
+void	ft_pull_rest(t_ps **stack, t_ps **stack2, int count, int argc)
+{
+	t_ps	*tmp;
+
+	tmp = *stack;
+	while (count < argc - 3)
+	{
+		ft_pb(stack, stack2);
+		ft_printf("pb 2\n");
+		tmp = *stack;
+		tmp = tmp->next;
+		count++;
+	}
+}
+
+void	ft_pull_lowtob(t_ps **stack, t_ps **stack2, int argc)
+{
+	t_ps	*tmp;
+	t_ps	*tmp2;
+	int		count;
+
+	tmp = *stack;
+	tmp2 = *stack;
+	count = 0;
+	while (count != argc / 2 - 1)
+	{
+		if (tmp->index < argc / 2 && count++ != argc / 2 - 1)
+		{
+			ft_pb(stack, stack2);
+			ft_printf("pb\n");
+		}
+		else
+		{
+			ft_ra(stack);
+			ft_printf("ra\n");
+		}
+		tmp = *stack;
+		tmp2 = *stack;
+		tmp2 = tmp2->next;
+	}
+	if (tmp->next->next->next)
+		ft_pull_rest(stack, stack2, count, argc);
+}
+
+void	ft_pos_lst(t_ps **lst, t_ps **lst2)
+{
+	int		i;
+	t_ps	*tmp;
+
+	i = 0;
+	tmp = *lst;
+	while (tmp)
+	{
+		tmp->pos = i++;
+		tmp = tmp->next;
+	}
+	i = 0;
+	tmp = *lst2;
+	while (tmp)
+	{
+		tmp->pos = i++;
+		tmp = tmp->next;
+	}
+}
+
+void	ft_targpos_lst(t_ps **lst, t_ps **lst2)
+{
+	t_ps	*tmp;
+	t_ps	*tmp2;
+	int		i;
+	int		j;
+
+	tmp = *lst2;
+	tmp2 = *lst;
+	i = tmp2->index;
+	j = 0;
+	while (tmp->next)
+	{
+		tmp2 = *lst;
+		while (tmp2->next)
+		{
+			if (tmp2->index < i)
+			{
+				i = tmp2->index;
+				j = tmp2->pos;
+			}
+			if (tmp->index > tmp2->index)
+				tmp->target_pos = j;
+			if (tmp->index < tmp2->index)
+				tmp->target_pos = tmp2->pos;
+			tmp2 = tmp->next;
+		}
+		tmp = tmp->next;
+	}
+}
+
+void ft_tri_list(t_ps **stack, t_ps **stack2, int argc)
 {
 	ft_printf("\033[0;32mLa Liste AVANT modif :\033[0m\n");
-	ft_printlst(stack, stack2);
+	ft_printlsts(stack, stack2);
 	if (argc == 3 && (*stack)->data > (*stack)->next->data)
 	{
 		ft_printf("\033[0;36msa\033[0m\n");
 		ft_sa(stack);
 	}
-	if (argc >= 5)
+	if (argc == 4)
 	{
 		ft_index_list(stack);
-		ft_pb(stack, stack2);
-//		ft_sa(stack);
-/* 		ft_pb(stack, stack2);
-		ft_pa(stack, stack2);
-		ft_pb(stack, stack2);
-		ft_pb(stack, stack2);
-		ft_pb(stack, stack2);
-		ft_ss(stack, stack2);
-		ft_rr(stack, stack2);
-		ft_rrr(stack, stack2);
-		ft_rrr(stack, stack2);
-		ft_rrr(stack, stack2); */
+		ft_printlsts(stack, stack2);
+		ft_trio_list(stack, argc);
 	}
+	if (argc > 4)
+	{
+		ft_index_list(stack);
+		ft_pull_lowtob(stack, stack2, argc - 1);
+		ft_trio_list(stack, argc);
+		ft_pos_lst(stack, stack2);
+		ft_targpos_lst(stack, stack2);
+	}  
 	ft_printf("\033[0;32mLa Liste APRES modif :\033[0m\n");
-	ft_printlst(stack, stack2);
+	ft_printlsts(stack, stack2);
 	ft_clean_lst(stack);
-	ft_clean_lst2(stack2);
+	ft_clean_lst(stack2);
 }
 
 int	main(int argc, char **argv)
 {
 	int	j;
 	t_ps	*stack = NULL;
-	t_ps2	*stack2 = NULL;
+	t_ps	*stack2 = NULL;
 
 	j = -1;
 	ft_printf("\033[0;32mINT_MAX :%d , INT_MIN :%d\033[0m\n", INT_MAX, INT_MIN);

@@ -27,15 +27,17 @@ typedef struct	ps_list2
 }	t_ps2;
 
 void	ft_sa(t_ps **lst);
-void	ft_sb(t_ps2 **lst);
-void	ft_ss(t_ps **lst, t_ps2 **lst2);
-void	ft_pa(t_ps **lst, t_ps2 **lst2);
-void	ft_pb(t_ps **lst, t_ps2 **lst2);
+void	ft_sb(t_ps **lst);
+void	ft_ss(t_ps **lst, t_ps **lst2);
+void	ft_pa(t_ps **lst, t_ps **lst2);
+void	ft_pb(t_ps **lst, t_ps **lst2);
 void	ft_ra(t_ps **lst);
-void	ft_rb(t_ps2 **lst);
-void	ft_rr(t_ps **lst, t_ps2 **lst2);
+void	ft_rb(t_ps **lst);
+void	ft_rr(t_ps **lst, t_ps **lst2);
 void	ft_rra(t_ps **lst);
-void	ft_rrb(t_ps2 **lst);
-void	ft_rrr(t_ps **lst, t_ps2 **lst2);
+void	ft_rrb(t_ps **lst);
+void	ft_rrr(t_ps **lst, t_ps **lst2);
+
+void	ft_printlst(t_ps **start);
 
 #endif
