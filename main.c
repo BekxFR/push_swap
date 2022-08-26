@@ -56,34 +56,34 @@ void	ft_printlsts(t_ps **start, t_ps **start2)
 
 	tmp = *start;
 	tmp2 = *start2;
-	ft_printf("\tVal A\t|\tInd A\t|\tPos A\t|\tVal B\t|\tInd B\t|\tPos B\t\n");
+	ft_printf(" VA\t| IA\t| PA\t| TPA\t| CA\t| VB\t| IB\t| PB\t| TPB\t| CB\n");
 	while (tmp || tmp2)
 	{
 		if (tmp2 && tmp)
 		{
 			if (tmp->next || tmp2->next)
-				ft_printf("\t%d\t|\t%d\t|\t%d\t|\t%d\t|\t%d\t|\t%d\t|\t%d\t|\t%d\t\n",
-				 tmp->data, tmp->index, tmp->pos, tmp->target_pos, tmp2->data, tmp2->index, tmp2->pos, tmp2->target_pos);
+				ft_printf(" %d\t| %d\t| %d\t| %d\t| %d\t| %d\t| %d\t| %d\t| %d\t| %d\t\n",
+				 tmp->data, tmp->index, tmp->pos, tmp->target_pos, tmp->cost_a, tmp2->data, tmp2->index, tmp2->pos, tmp2->target_pos, tmp2->cost_b);
 			else
-				ft_printf("\t%d\t|\t%d\t|\t%d\t|\t%d\t|\t%d\t|\t%d\t|\t%d\t|\t%d\t",
-				 tmp->data, tmp->index, tmp->pos, tmp->target_pos, tmp2->data, tmp2->index, tmp2->pos, tmp2->target_pos);
+				ft_printf(" %d\t| %d\t| %d\t| %d\t| %d\t| %d\t| %d\t| %d\t| %d\t| %d\t",
+				 tmp->data, tmp->index, tmp->pos, tmp->target_pos, tmp->cost_a, tmp2->data, tmp2->index, tmp2->pos, tmp2->target_pos, tmp2->cost_b);
 			tmp = tmp->next;
 			tmp2 = tmp2->next;
 		}
 		else if (!tmp2)
 		{
 			if (tmp->next)
-				ft_printf("\t%d\t|\t%d\t|\t%d\t|\t%d\t|\t-\t|\t-\t|\t-\t|\t-\t\n", tmp->data, tmp->index, tmp->pos, tmp->target_pos);
+				ft_printf(" %d\t| %d\t| %d\t| %d\t| %d\t| -\t| -\t| -\t| -\t| -\t\n", tmp->data, tmp->index, tmp->pos, tmp->target_pos, tmp->cost_a);
 			else
-				ft_printf("\t%d\t|\t%d\t|\t%d\t|\t%d\t|\t-\t|\t-\t|\t-\t|\t-\t", tmp->data, tmp->index, tmp->pos, tmp->target_pos);
+				ft_printf(" %d\t| %d\t| %d\t| %d\t| %d\t| -\t| -\t| -\t| -\t| -\t", tmp->data, tmp->index, tmp->pos, tmp->target_pos, tmp->cost_a);
 			tmp = tmp->next;
 		}
 		else if (!tmp)
 		{
 			if (tmp2->next)
-				ft_printf("\t-\t|\t-\t|\t-\t|\t-\t|\t%d\t|\t%d\t|\t%d\t|\t%d\t\n", tmp2->data, tmp2->index, tmp2->pos, tmp2->target_pos);
+				ft_printf(" -\t| -\t| -\t| -\t| -\t| %d\t| %d\t| %d\t| %d\t| %d\t\n", tmp2->data, tmp2->index, tmp2->pos, tmp2->target_pos, tmp2->cost_b);
 			else
-				ft_printf("\t-\t|\t-\t|\t-\t|\t-\t|\t%d\t|\t%d\t|\t%d\t|\t%d\t", tmp2->data, tmp2->index, tmp2->pos, tmp2->target_pos);
+				ft_printf(" -\t| -\t| -\t| -\t| -\t| %d\t| %d\t| %d\t| %d\t| %d\t", tmp2->data, tmp2->index, tmp2->pos, tmp2->target_pos, tmp2->cost_b);
 			tmp2 = tmp2->next;
 		}
 	}
@@ -140,6 +140,8 @@ void	ft_lst_addlast(t_ps **lst, int i)
 	tmp->index = 1;
 	tmp->pos = 0; // TMP
 	tmp->target_pos = 0; // TMP
+	tmp->cost_a = 0; // TMP
+	tmp->cost_b = 0; // TMP
 	tmp->next = NULL;
 	tmp2 = *lst;
 	if (!*lst)
@@ -259,19 +261,29 @@ void	ft_index_list(t_ps **lst)
 
 void	ft_trio_list(t_ps **stack, int argc)
 {
-	if ((*stack)->index == argc - 1)
+	t_ps *tmp;
+
+	tmp = *stack;
+	argc = 0;
+	while (tmp)
 	{
-		ft_ra(stack);
+		if (argc < tmp->index)
+			argc = tmp->index;
+		tmp = tmp->next;
+	}
+	if ((*stack)->index == argc)
+	{
+		ft_ra(stack); //
 		ft_printf("ra\n");
 	}
-	if ((*stack)->next->index == argc - 1)
+	if ((*stack)->next->index == argc)
 	{
-		ft_rra(stack);
+		ft_rra(stack); //
 		ft_printf("rra\n");
 	}
 	if ((*stack)->index > (*stack)->next->index)
 	{
-		ft_sa(stack);
+		ft_sa(stack); //
 		ft_printf("sa\n");
 	}
 }
@@ -284,7 +296,7 @@ void	ft_pull_rest(t_ps **stack, t_ps **stack2, int count, int argc)
 	while (count < argc - 3)
 	{
 		ft_pb(stack, stack2);
-		ft_printf("pb 2\n");
+		ft_printf("pb\n");
 		tmp = *stack;
 		tmp = tmp->next;
 		count++;
@@ -341,7 +353,35 @@ void	ft_pos_lst(t_ps **lst, t_ps **lst2)
 	}
 }
 
-void	ft_targpos_lst(t_ps **lst, t_ps **lst2)
+int	ft_index_inf(t_ps **lst, t_ps **lst2)
+{
+	int i;
+
+	(*lst2)->target_pos = (*lst)->pos;
+	i = (*lst)->index;
+	return (i);
+}
+
+void	ft_index_supp(t_ps **lst, t_ps **lst2, int argc)
+{
+	t_ps *tmp;
+	int i;
+
+	ft_printf("TEST TEST\n");
+	tmp = *lst;
+	while (tmp)
+	{
+		if (tmp->index < argc)
+		{
+			argc = tmp->index;
+			i = tmp->pos;
+		}
+		tmp = tmp->next;
+	}
+	(*lst2)->target_pos = i;
+}
+
+void	ft_targpos_lst(t_ps **lst, t_ps **lst2, int argc)
 {
 	t_ps	*tmp;
 	t_ps	*tmp2;
@@ -350,29 +390,75 @@ void	ft_targpos_lst(t_ps **lst, t_ps **lst2)
 
 	tmp = *lst2;
 	tmp2 = *lst;
-	i = tmp2->index;
-	j = 0;
-	while (tmp->next)
+	while (tmp)
 	{
-		tmp2 = *lst;
-		while (tmp2->next)
+		i = argc;
+		j = argc;
+		while (tmp2)
 		{
-			if (tmp2->index < i)
+			if (tmp->index < tmp2->index && i > tmp2->index)
 			{
-				i = tmp2->index;
-				j = tmp2->pos;
+				i = ft_index_inf(&tmp2, &tmp);
+				j = 0;
 			}
-			if (tmp->index > tmp2->index)
-				tmp->target_pos = j;
-			if (tmp->index < tmp2->index)
-				tmp->target_pos = tmp2->pos;
-			tmp2 = tmp->next;
+			tmp2 = tmp2->next;
 		}
+		if (j)
+			ft_index_supp(lst, &tmp, argc);
+		tmp2 = *lst;
 		tmp = tmp->next;
 	}
 }
 
-void ft_tri_list(t_ps **stack, t_ps **stack2, int argc)
+void	ft_top_costa(t_ps **lst)
+{
+	int	i;
+	int	j;
+	t_ps	*tmp;
+
+	if (!*lst)
+		return ;
+	tmp = *lst;
+	j = 0;
+	while (tmp && ++j)
+		tmp = tmp->next;
+	tmp = *lst;
+	while (tmp)
+	{
+		i = tmp->pos;
+		if (i < (j / 2))
+			tmp->cost_a = i + 1;
+		if (i >= (j / 2))
+			tmp->cost_a = (-j + i);
+		tmp = tmp->next;
+	}
+}
+
+void	ft_top_costb(t_ps **lst)
+{
+	int	i;
+	int	j;
+	t_ps	*tmp;
+
+	if (!*lst)
+		return ;
+	tmp = *lst;
+	j = 0;
+	while (tmp && ++j)
+		tmp = tmp->next;
+	tmp = *lst;
+	while (tmp)
+	{
+		i = tmp->pos;
+		if (i < (j / 2))
+			tmp->cost_b = i + 1;
+		if (i >= (j / 2))
+			tmp->cost_b = (-j + i);
+		tmp = tmp->next;
+	}
+}
+
+void	ft_tri_list(t_ps **stack, t_ps **stack2, int argc)
 {
 	ft_printf("\033[0;32mLa Liste AVANT modif :\033[0m\n");
 	ft_printlsts(stack, stack2);
@@ -393,7 +479,11 @@ void ft_tri_list(t_ps **stack, t_ps **stack2, int argc)
 		ft_pull_lowtob(stack, stack2, argc - 1);
 		ft_trio_list(stack, argc);
 		ft_pos_lst(stack, stack2);
-		ft_targpos_lst(stack, stack2);
+		ft_printlsts(stack, stack2); // 
+		ft_targpos_lst(stack, stack2, argc);
+		ft_printlsts(stack, stack2); //
+		ft_top_costa(stack);
+		ft_top_costb(stack2);
 	}  
 	ft_printf("\033[0;32mLa Liste APRES modif :\033[0m\n");
 	ft_printlsts(stack, stack2);
