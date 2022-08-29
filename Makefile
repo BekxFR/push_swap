@@ -10,7 +10,7 @@
 #                                                                              #
 # **************************************************************************** #
 
-.PHONY : all test5 test100 vtest5 vtest100 norm clean fclean re
+.PHONY : all test3 ptest5 test5 ptest100 test100 test500 vtest5 vtest100 norm clean fclean re
 
 NAME := push_swap.a
 SOFT_NAME := push_swap
@@ -67,21 +67,45 @@ ${SOFT_NAME} :
 $(OBJF) :
 	@mkdir -p ${OBJ_DIR}
 
-test5 : $(NAME)	
+ptest5 : $(NAME)	
 		$(eval ARG = $(shell shuf -i 0-50 -n 5))
 		./push_swap $(ARG)
 
-vtest5 : $(NAME)	
-		$(eval ARG = $(shell shuf -i 0-50 -n 5))
-		${VAL} ./push_swap $(ARG)
+#vtest5 : $(NAME)	
+#		$(eval ARG = $(shell shuf -i 0-50 -n 5))
+#		${VAL} ./push_swap $(ARG)
 
-test100 : $(NAME)	
+ptest100 : $(NAME)	
 		$(eval ARG = $(shell shuf -i 0-1000 -n 100))
 		./push_swap $(ARG)
 
-vtest100 : $(NAME)	
+#vtest100 : $(NAME)	
+#		$(eval ARG = $(shell shuf -i 0-1000 -n 100))
+#		${VAL} ./push_swap $(ARG)
+
+test3:		$(NAME)	
+		$(eval ARG = $(shell shuf -i 0-50 -n 3))
+		./push_swap $(ARG) | ./checker_linux $(ARG)
+		@echo -n "Instructions: "
+		@./push_swap $(ARG) | wc -l
+
+test5:		$(NAME)	
+		$(eval ARG = $(shell shuf -i 0-50 -n 5))
+		./push_swap $(ARG) | ./checker_linux $(ARG)
+		@echo -n "Instructions: "
+		@./push_swap $(ARG) | wc -l
+
+test100:	$(NAME)	
 		$(eval ARG = $(shell shuf -i 0-1000 -n 100))
-		${VAL} ./push_swap $(ARG)
+		./push_swap $(ARG) | ./checker_linux $(ARG)
+		@echo -n "Instructions: "
+		@./push_swap $(ARG) | wc -l
+
+test500:	$(NAME)	
+		$(eval ARG = $(shell shuf -i 0-2000 -n 500))
+		./push_swap $(ARG) | ./checker_linux $(ARG)
+		@echo -n "Instructions: "
+		@./push_swap $(ARG) | wc -l
 
 clean : 
 	${FCLIB}

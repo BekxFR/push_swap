@@ -39,5 +39,6 @@ void	ft_rrb(t_ps **lst);
 void	ft_rrr(t_ps **lst, t_ps **lst2);
 
 void	ft_printlst(t_ps **start);
+void	ft_clean_lst(t_ps **start);
 
 #endif
