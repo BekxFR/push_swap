@@ -9,3 +9,4 @@ push_swap
 *.a
 push_swap*
 checker_linux
+checker

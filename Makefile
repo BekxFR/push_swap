@@ -10,10 +10,11 @@
 #                                                                              #
 # **************************************************************************** #
 
-.PHONY : all test3 ptest5 test5 ptest100 test100 test500 vtest5 vtest100 norm clean fclean re
+.PHONY : all test3 ptest5 test5 ptest100 test100 test500 vtest5 vtest100 vtest500 bonus norm clean fclean re
 
 NAME := push_swap.a
 SOFT_NAME := push_swap
+CHECKER_NAME := checker
 
 CC := gcc
 FLAGS := -Wall -Wextra -Werror -I includes/
@@ -67,42 +68,53 @@ ${SOFT_NAME} :
 $(OBJF) :
 	@mkdir -p ${OBJ_DIR}
 
-ptest5 : $(NAME)	
+bonus : ${CHECKER_NAME}
+
+${CHECKER_NAME} :
+	@echo "${BLUE}###${NC}Creation du fichier ${CHECKER_NAME}${BLUE}###${ORANGE}"
+	${CC} ${FLAGS} -o ${CHECKER_NAME} ${NAME}
+	@echo "${NC}"
+
+ptest5 :
 		$(eval ARG = $(shell shuf -i 0-50 -n 5))
 		./push_swap $(ARG)
 
-#vtest5 : $(NAME)	
-#		$(eval ARG = $(shell shuf -i 0-50 -n 5))
-#		${VAL} ./push_swap $(ARG)
+vtest5 :
+		$(eval ARG = $(shell shuf -i 0-50 -n 5))
+		${VAL} ./push_swap $(ARG)
 
-ptest100 : $(NAME)	
+ptest100 :
 		$(eval ARG = $(shell shuf -i 0-1000 -n 100))
 		./push_swap $(ARG)
 
-#vtest100 : $(NAME)	
-#		$(eval ARG = $(shell shuf -i 0-1000 -n 100))
-#		${VAL} ./push_swap $(ARG)
+vtest100 :
+		$(eval ARG = $(shell shuf -i 0-1000 -n 100))
+		${VAL} ./push_swap $(ARG)
 
-test3:		$(NAME)	
+vtest500 :
+		$(eval ARG = $(shell shuf -i 0-2000 -n 500))
+		${VAL} ./push_swap $(ARG)
+
+test3 :
 		$(eval ARG = $(shell shuf -i 0-50 -n 3))
 		./push_swap $(ARG) | ./checker_linux $(ARG)
 		@echo -n "Instructions: "
 		@./push_swap $(ARG) | wc -l
 
-test5:		$(NAME)	
-		$(eval ARG = $(shell shuf -i 0-50 -n 5))
+test5 :
+		$(eval ARG = $(shell shuf -i 1-5 -n 5))
 		./push_swap $(ARG) | ./checker_linux $(ARG)
 		@echo -n "Instructions: "
 		@./push_swap $(ARG) | wc -l
 
-test100:	$(NAME)	
+test100 :
 		$(eval ARG = $(shell shuf -i 0-1000 -n 100))
 		./push_swap $(ARG) | ./checker_linux $(ARG)
 		@echo -n "Instructions: "
 		@./push_swap $(ARG) | wc -l
 
-test500:	$(NAME)	
-		$(eval ARG = $(shell shuf -i 0-2000 -n 500))
+test500 :
+		$(eval ARG = $(shell shuf -i 0-555555 -n 500))
 		./push_swap $(ARG) | ./checker_linux $(ARG)
 		@echo -n "Instructions: "
 		@./push_swap $(ARG) | wc -l

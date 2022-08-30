@@ -6,7 +6,7 @@
 /*   By: chillion <chillion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 18:15:59 by chillion          #+#    #+#             */
-/*   Updated: 2022/08/29 18:29:46 by chillion         ###   ########.fr       */
+/*   Updated: 2022/08/30 13:13:11 by chillion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ long int	ft_long_atoi(const char *nptr)
 		x++;
 	}
 	nb *= y;
-	if ((nb > INT_MAX || nb < INT_MIN) || nptr[x++])
+	if ((nb > INT_MAX || nb < INT_MIN) || nptr[x++] || !nptr[0])
 		return (999999999999);
 	return (nb);
 }
