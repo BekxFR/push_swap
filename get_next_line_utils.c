@@ -6,25 +6,11 @@
 /*   By: chillion <chillion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/08 11:01:25 by chillion          #+#    #+#             */
-/*   Updated: 2022/08/30 16:30:36 by chillion         ###   ########.fr       */
+/*   Updated: 2022/08/30 17:16:47 by chillion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-
-size_t	ft_strlen(const char *str)
-{
-	int	i;
-
-	i = 0;
-	if (!str)
-		return (0);
-	while (str[i] != '\0')
-	{
-		i++;
-	}
-	return (i);
-}
 
 char	*ft_free_strjoin(char *s1, char *s2)
 {

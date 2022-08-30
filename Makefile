@@ -34,13 +34,21 @@ MAGENTA = \033[0;35m
 CYAN = \033[0;36m
 NC = \033[0m
 
-COTHERS = $(wildcard *.c)  ## A MODIF
+SRCS = push_swap.c	\
+	push_swap_tools.c	\
+
+BONUS = checker.c	\
+	get_next_line.c	\
+	get_next_line_utils.c \
+
 FLIB := libft/libft.a
 FCLIB := ${MAKE} fclean -C libft
 
-OBJS = $(COTHERS:%.c=%.o)
+OBJS = $(SRCS:%.c=%.o)
+BOBJS = $(BONUS:%.c=%.o)
 
 OBJ = $(addprefix $(OBJ_DIR),$(OBJS))
+BOBJ = $(addprefix $(OBJ_DIR),$(BOBJS))
 
 OBJF := .cache_exists
 
@@ -57,7 +65,7 @@ ${NAME} : ${OBJ}
 
 ${OBJ_DIR}%.o : %.c | $(OBJF)
 	@echo "${BLUE}###${NC}Creation du fichier ${@:%.c=%.o}${BLUE}###${ORANGE}"
-	${CC} ${FLAGS} -c $< -o $@
+	${CC} ${FLAGS} -c -D BUFFER_SIZE=500 $< -o $@
 	@echo "${NC}"
 
 ${SOFT_NAME} :
@@ -68,7 +76,10 @@ ${SOFT_NAME} :
 $(OBJF) :
 	@mkdir -p ${OBJ_DIR}
 
-bonus : ${CHECKER_NAME}
+bonus : ${BOBJ}
+	@echo "${BLUE}###${NC}Update de l'archive ${NAME}${BLUE}###${MAGENTA}"
+	${AR} ${NAME} ${BOBJ}
+	@echo "${NC}"
 
 ${CHECKER_NAME} :
 	@echo "${BLUE}###${NC}Creation du fichier ${CHECKER_NAME}${BLUE}###${ORANGE}"

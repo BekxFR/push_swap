@@ -4,6 +4,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include "push_swap.h"
+#include "get_next_line.h"
 
 int	ft_push_swap(int i)
 {
@@ -720,7 +721,32 @@ void	ft_tri_list(t_ps **stack, t_ps **stack2, int argc)
 	ft_clean_lst(stack2);
 }
 
-int	main(int argc, char **argv)
+int		main(int argc, char **argv) {
+    int fd;
+    int j = 1;
+    int k = 1;
+    int l;
+    char *line;
+
+    while (++j <= argc) {
+        fd = open(k, O_RDONLY);
+        printf("TEST:%s", argv[k]);
+        line = "";
+        l = 0;
+        while (fd > 0 && line != NULL)
+        {
+            line = get_next_line(fd);
+            ++l;
+            printf("\033[0;31mLINE %d:%sFIN\033[0m\n", l, line);
+            free(line);
+        }
+        k++;
+    }
+    fd = close(fd);
+    return (0);
+}
+
+/* int	main(int argc, char **argv)
 {
 	int		j;
 	char *str = NULL;
@@ -740,8 +766,8 @@ int	main(int argc, char **argv)
 		{
 			ft_clean_lst(&stack);
 		}
-/* 		if (stack)
-			ft_tri_list(&stack, &stack2, argc); */
+//		if (stack)
+//			ft_tri_list(&stack, &stack2, argc);
 		while (j != 0)
 			j = read(0 , str, 500);
 		str = get_next_line(j);
@@ -753,7 +779,7 @@ int	main(int argc, char **argv)
 		}
 	}	
 	return 0;
-}
+} */
 
 
 /* Wcc -g3 -o push_swap main.c push_swap_tools.c push_swap.a */
