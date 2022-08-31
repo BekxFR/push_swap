@@ -1,187 +1,93 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   push_swap_tools.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: chillion <chillion@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/08/31 16:15:34 by chillion          #+#    #+#             */
+/*   Updated: 2022/08/31 16:15:35 by chillion         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "push_swap.h"
 
-void	ft_sa(t_ps **lst)
-{
-	t_ps *tmp;
-	t_ps *tmp2;
-
-	if (!*lst || !(*lst)->next)
-		return ;
-	tmp = *lst;
-	tmp2 = tmp->next;
-	tmp->next = tmp->next->next;
-	tmp2->next = tmp;
-	*lst = tmp2;
-}
-
-void	ft_sb(t_ps **lst)
-{
-	t_ps *tmp;
-	t_ps *tmp2;
-
-	if (!*lst || !(*lst)->next)
-		return ;
-	tmp = *lst;
-	tmp2 = tmp->next;
-	tmp->next = tmp->next->next;
-	tmp2->next = tmp;
-	*lst = tmp2;
-}
-
-void	ft_ss(t_ps **lst, t_ps **lst2)
-{
-	ft_sa(lst);
-	ft_sb(lst2);
-}
-
-void	ft_pa(t_ps **lst, t_ps **lst2)
-{
-	t_ps *tmp;
-
-	if (!*lst2)
-		return;
-	tmp = *lst2;
-	if (!(*lst2)->next)
-		(*lst2) = NULL;
-	else
-		(*lst2) = (*lst2)->next;
-	if (!*lst)
-		tmp->next = NULL;
-	else
-		tmp->next = *lst;
-	*lst = tmp;
-}
-
-void	ft_pb(t_ps **lst, t_ps **lst2)
-{
-	t_ps *tmp;
-
-	if (!*lst)
-		return;
-	tmp = *lst;
-	(*lst) = (*lst)->next;
-	if (!*lst2)
-		tmp->next = NULL;
-	else
-		tmp->next = *lst2;
-	*lst2 = tmp;
-}
-
-void	ft_ra(t_ps **lst)
-{
-	t_ps *tmp;
-	t_ps *tmp2;
-
-	if (!*lst || !(*lst)->next)
-		return ;
-	tmp = *lst;
-	tmp2 = (*lst)->next;
-	*lst = tmp2;
-	tmp->next = NULL;
- 	while (tmp2->next)
-		tmp2 = tmp2->next;
-	tmp2->next = tmp;
-}
-
-void	ft_rb(t_ps **lst)
-{
-	t_ps *tmp;
-	t_ps *tmp2;
-
-	if (!*lst || !(*lst)->next)
-		return ;
-	tmp = *lst;
-	tmp2 = (*lst)->next;
-	*lst = tmp2;
-	tmp->next = NULL;
- 	while (tmp2->next)
-		tmp2 = tmp2->next;
-	tmp2->next = tmp;
-}
-
-void	ft_rr(t_ps **lst, t_ps **lst2)
-{
-	if (*lst)
-		ft_ra(lst);
-	if (*lst2)
-		ft_rb(lst2);
-}
-
-void	ft_rra(t_ps **lst)
+void	ft_printlst(t_ps **start)
 {
 	t_ps	*tmp;
-	t_ps	*tmp2;
 
-	if (!*lst || !(*lst)->next)
-		return ;
-	tmp = *lst;
-	while (tmp->next)
+	tmp = *start;
+	while (tmp)
 	{
-		if (!tmp->next->next)
-		{
-			tmp2 = tmp->next;
-			tmp2->next = *lst;
-			tmp->next = NULL;
-			break ;
-		}
+		ft_printf("%d ", tmp->data);
 		tmp = tmp->next;
 	}
-	*lst = tmp2;
+	ft_printf("\n");
 }
 
-void	ft_rrb(t_ps **lst)
+void	ft_lst_addfirst(t_ps **start, int i)
+{
+	t_ps	*tmp;
+
+	tmp = (t_ps *)malloc(sizeof(t_ps));
+	if (!tmp)
+		return ;
+	tmp->data = i;
+	tmp->next = *start;
+	*start = tmp;
+}
+
+void	ft_lst_addlast(t_ps **lst, int i)
 {
 	t_ps	*tmp;
 	t_ps	*tmp2;
 
-	if (!*lst || !(*lst)->next)
+	tmp = (t_ps *)malloc(sizeof (t_ps));
+	if (!tmp)
 		return ;
-	tmp = *lst;
-	while (tmp->next)
+	tmp->data = i;
+	tmp->index = 1;
+	tmp->pos = 0;
+	tmp->target_pos = 0;
+	tmp->cost_a = 0;
+	tmp->cost_b = 0;
+	tmp->next = NULL;
+	tmp2 = *lst;
+	if (!*lst)
 	{
-		if (!tmp->next->next)
-		{
-			tmp2 = tmp->next;
-			tmp2->next = *lst;
-			tmp->next = NULL;
-			break ;
-		}
+		*lst = tmp;
+		return ;
+	}
+	while (tmp2->next)
+		tmp2 = tmp2->next;
+	tmp2->next = tmp;
+	return ;
+}
+
+void	ft_clean_lst(t_ps **start)
+{
+	t_ps	*tmp;
+
+	while (*start != NULL)
+	{
+		tmp = *start;
+		*start = tmp->next;
+		free(tmp);
+	}
+}
+
+int	ft_find_index(t_ps **lst)
+{
+	int		i;
+	t_ps	*tmp;
+
+	i = 999999;
+	tmp = *lst;
+	while (tmp)
+	{
+		if (i > tmp->index)
+			i = tmp->index;
 		tmp = tmp->next;
 	}
-	*lst = tmp2;
+	return (i);
 }
-
-void	ft_rrr(t_ps **lst, t_ps **lst2)
-{
-	if (*lst)
-		ft_rra(lst);
-	if (*lst2)
-		ft_rrb(lst2);
-}
-
-/* void	ft_costa_tob(t_ps **lst, t_ps **lst2)
-{
-	t_ps	*tmp;
-	t_ps	*tmp2;
-
-	tmp = *lst;
-	tmp2 = *lst2;
-	while (tmp2)
-	{
-		while (tmp)
-		{
-			if (tmp2->target_pos == tmp->pos)
-			{
-				if (tmp->cost_a < 0 && tmp2->cost_b >= 0)
-					tmp2->cost_a = tmp2->cost_b + (tmp->cost_a * -1);
-				else if (tmp2->cost_b < 0 && tmp->cost_a >= 0)
-					tmp2->cost_a = (tmp2->cost_b * -1) + tmp->cost_a;
-				else
-					tmp2->cost_a = tmp->cost_a + tmp2->cost_b;
-			}
-			tmp = tmp->next;
-		}
-		tmp = *lst;
-		tmp2 = tmp2->next;
-	}
-} */

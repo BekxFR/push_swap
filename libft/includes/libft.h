@@ -89,6 +89,6 @@ void		ft_puthex_base(unsigned long int nbr, char *base);
 int			ft_basecheck(char *base);
 int			ft_hex_size(unsigned long int nb, char *base);
 
-long int	ft_long_atoi(const char *nptr);
+long int	ft_long_strict_atoi(const char *nptr);
 
 #endif

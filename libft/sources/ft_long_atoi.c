@@ -6,13 +6,13 @@
 /*   By: chillion <chillion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 18:15:59 by chillion          #+#    #+#             */
-/*   Updated: 2022/08/30 18:09:17 by chillion         ###   ########.fr       */
+/*   Updated: 2022/08/31 12:17:40 by chillion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-long int	ft_long_atoi(const char *nptr)
+long int	ft_long_strict_atoi(const char *nptr)
 {
 	int			x;
 	int			y;
@@ -21,21 +21,21 @@ long int	ft_long_atoi(const char *nptr)
 	x = 0;
 	y = 1;
 	nb = 0;
-	while ((nptr[x] >= 9 && nptr[x] <= 13) || nptr[x] == ' ')
-		x++;
+	if (nptr[x] == '-')
+			y = -1;
 	if (nptr[x] == '+' || nptr[x] == '-')
-	{
-		if (nptr[x] == '-')
-			y *= -1;
 		x++;
-	}
+	if (!nptr[x])
+		return (999999999999);
 	while (nptr[x] >= '0' && nptr[x] <= '9')
 	{
+		if (nptr[x + 1] == '.' && nptr[x + 2] == '.')
+			return (999999999999);
 		nb = nb * 10 + (nptr[x] - 48);
 		x++;
 	}
-	nb *= y;
-	if ((nb > INT_MAX || nb < INT_MIN) || nptr[x++] || !nptr[0])
+	if ((nb * y > INT_MAX) || (nb * y < INT_MIN)
+		|| (!nptr[0]) || (nptr[x] && nptr[x] != '.'))
 		return (999999999999);
-	return (nb);
+	return (nb * y);
 }

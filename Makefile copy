@@ -15,7 +15,7 @@
 NAME := push_swap.a
 NAME_BONUS := checker.a
 SOFT_NAME := push_swap
-BONUS_NAME := checker
+CHECKER_NAME := checker
 
 CC := gcc
 FLAGS := -Wall -Wextra -Werror -I includes/
@@ -69,41 +69,45 @@ BOBJ = $(addprefix $(OBJ_DIR),$(BOBJS))
 
 OBJF := .cache_exists
 
-${FLIB} :
-	${MAKE} all -C libft
-	cp ${FLIB} ${NAME}
-
-${NAME} : ${OBJ}
-	@echo "${BLUE}###${NC}Update de l'archive ${NAME}${BLUE}###${MAGENTA}"
-	${AR} ${NAME} ${OBJ}
-	@echo "${NC}"
-
-${OBJ_DIR}%.o : %.c | $(OBJF)
+${OBJ_DIR}%.o : %.c
 	@echo "${BLUE}###${NC}Creation du fichier ${@:%.c=%.o}${BLUE}###${ORANGE}"
 	${CC} ${FLAGS} -c $< -o $@
 	@echo "${NC}"
 
+${FLIB} : | $(OBJF)
+	${MAKE} all -C libft
+	cp ${FLIB} ${OBJ_DIR}${NAME}
+
+${FLIB2} :
+	cp ${FLIB} ${OBJ_DIR}${NAME}
+
 all : ${FLIB} ${NAME} ${SOFT_NAME}
+
+${NAME} : ${OBJ}
+	@echo "${BLUE}###${NC}Update de l'archive ${NAME}${BLUE}###${MAGENTA}"
+	${AR} ${OBJ_DIR}${NAME} ${OBJ}
+	@echo "${NC}"
+
+${NAME_BONUS} : ${BOBJ}
+#	cp ${FLIB} ${OBJ_DIR}${NAME_BONUS}
+	@echo "${BLUE}###${NC}Update de l'archive ${NAME}${BLUE}###${MAGENTA}"
+	${AR} ${OBJ_DIR}${NAME_BONUS} ${BOBJ}
+	@echo "${NC}"
 
 ${SOFT_NAME} :
 	@echo "${BLUE}###${NC}Creation du fichier ${SOFT_NAME}${BLUE}###${ORANGE}"
-	${CC} ${FLAGS} -o ${SOFT_NAME} ${NAME}
+	${CC} ${FLAGS} -o ${SOFT_NAME} ${OBJ_DIR}${NAME}
+	@echo "${NC}"
+
+${CHECKER_NAME} :
+	@echo "${BLUE}###${NC}Creation du fichier ${CHECKER_NAME}${BLUE}###${ORANGE}"
+	${CC} ${FLAGS} -o ${CHECKER_NAME} ${OBJ_DIR}${NAME_BONUS}
 	@echo "${NC}"
 
 $(OBJF) :
 	@mkdir -p ${OBJ_DIR}
 
-bonus : ${BOBJ} ${BONUS_NAME} ${NAME_BONUS}
-
-${BONUS_NAME} :
-	@echo "${BLUE}###${NC}Creation du fichier ${BONUS_NAME}${BLUE}###${ORANGE}"
-	${CC} ${FLAGS} -o ${BONUS_NAME} ${NAME_BONUS}
-	@echo "${NC}"
-
-${NAME_BONUS} : ${BOBJ}
-	@echo "${BLUE}###${NC}Update de l'archive ${NAME_BONUS}${BLUE}###${MAGENTA}"
-	${AR} ${NAME_BONUS} ${FLIB} ${BOBJ}
-	@echo "${NC}"
+bonus : ${FLIB2} ${BOBJ} ${NAME_BONUS} ${CHECKER_NAME}
 
 ptest5 :
 		$(eval ARG = $(shell shuf -i 0-50 -n 5))
