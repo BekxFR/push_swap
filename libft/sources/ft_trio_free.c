@@ -1,22 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_toupper.c                                       :+:      :+:    :+:   */
+/*   ft_tri_free.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chillion <chillion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/03 16:56:34 by chillion          #+#    #+#             */
-/*   Updated: 2022/09/01 15:24:31 by chillion         ###   ########.fr       */
+/*   Created: 2022/09/01 15:25:57 by chillion          #+#    #+#             */
+/*   Updated: 2022/09/01 16:48:49 by chillion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "ft_printf.h"
 
-int	ft_toupper(int c)
+void	ft_trio_free(char **str, char **str2, char **str3)
 {
-	if (c >= 97 && c <= 122)
+	if (str && *str)
 	{
-		return (c - 32);
+		free(*str);
+		*str = NULL;
 	}
-	return (c);
+	if (str2 && *str2)
+	{
+		free(*str2);
+		*str = NULL;
+	}
+	if (str3 && *str3)
+	{
+		free(*str3);
+		*str = NULL;
+	}
 }

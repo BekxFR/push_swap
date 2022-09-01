@@ -1,7 +1,8 @@
 
 #include "checker.h"
+#include "push_swap.h"
 
-void	ft_trio_list(t_ps **stack, int argc)
+/* void	ft_trio_list(t_ps **stack, int argc)
 {
 	t_ps	*tmp;
 
@@ -97,7 +98,7 @@ void	ft_tri_list(t_ps **stack, t_ps **stack2, int argc)
 	}
 	ft_clean_lst(stack);
 	ft_clean_lst(stack2);
-}
+} */
 
 int	main(int argc, char **argv)
 {
@@ -108,7 +109,6 @@ int	main(int argc, char **argv)
 	stack = NULL;
 	stack2 = NULL;
 	j = -1;
-	ft_tester_makefile(argc);
 	if (argc > 2)
 	{
 		while (++j < argc - 1)
@@ -122,7 +122,12 @@ int	main(int argc, char **argv)
 			ft_clean_lst(&stack);
 		}
 		if (stack)
-			ft_tri_list(&stack, &stack2, argc);
+		{
+			if (ft_tester_makefile(argc, &stack, &stack2) != 1)
+				ft_printf("ECHeC");
+			ft_clean_lst(&stack);
+		}
+//		ft_tri_list(&stack, &stack2, argc);
 	}	
 	return (0);
 }

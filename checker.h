@@ -2,10 +2,11 @@
 # define CHECKER_H
 
 # include <stdio.h>
+
 # include "libft/includes/libft.h"
 # include "libft/includes/ft_printf.h"
 # include "push_swap.h"
 
-void	ft_tester_makefile(int argc);
+int	ft_tester_makefile(int argc, t_ps **lst, t_ps **lst2);
 
 #endif

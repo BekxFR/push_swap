@@ -3,19 +3,19 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: chillion <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: chillion <chillion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2022/05/24 13:40:15 by chillion          #+#    #+#              #
-#    Updated: 2022/05/24 13:40:18 by chillion         ###   ########.fr        #
+#    Created: 2022/09/01 12:07:22 by chillion          #+#    #+#              #
+#    Updated: 2022/09/01 12:07:22 by chillion         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-.PHONY : all test3 ptest5 test5 ptest100 test100 test500 vtest5 vtest100 vtest500 bonus norm clean fclean re
+.PHONY : all test3 test5 test100 test500 vtest2 vtest3 vtest5 vtest100 vtest500 bonus norm clean fclean re
 
 NAME := push_swap.a
 NAME_BONUS := checker.a
 SOFT_NAME := push_swap
-BONUS_NAME := checker
+SOFT_BONUS := checker
 
 CC := gcc
 FLAGS := -Wall -Wextra -Werror -I includes/
@@ -23,7 +23,7 @@ SRC_DIR := sources/
 OBJ_DIR := objects/
 AR := ar rc
 RM := rm
-VAL := valgrind --leak-check=full
+VAL := valgrind --leak-check=full --track-origins=yes
 
 BLACK = \033[1;30m
 REDBG = \033[30;41m
@@ -63,11 +63,14 @@ FCLIB := ${MAKE} fclean -C libft
 
 OBJS = $(SRCS:%.c=%.o)
 BOBJS = $(BONUS:%.c=%.o)
+NORM = $(wildcard *.c) $(wildcard *.h)
 
 OBJ = $(addprefix $(OBJ_DIR),$(OBJS))
 BOBJ = $(addprefix $(OBJ_DIR),$(BOBJS))
 
 OBJF := .cache_exists
+
+all : ${FLIB} ${NAME} ${SOFT_NAME}
 
 ${FLIB} :
 	${MAKE} all -C libft
@@ -83,8 +86,6 @@ ${OBJ_DIR}%.o : %.c | $(OBJF)
 	${CC} ${FLAGS} -c $< -o $@
 	@echo "${NC}"
 
-all : ${FLIB} ${NAME} ${SOFT_NAME}
-
 ${SOFT_NAME} :
 	@echo "${BLUE}###${NC}Creation du fichier ${SOFT_NAME}${BLUE}###${ORANGE}"
 	${CC} ${FLAGS} -o ${SOFT_NAME} ${NAME}
@@ -93,29 +94,29 @@ ${SOFT_NAME} :
 $(OBJF) :
 	@mkdir -p ${OBJ_DIR}
 
-bonus : ${BOBJ} ${BONUS_NAME} ${NAME_BONUS}
-
-${BONUS_NAME} :
-	@echo "${BLUE}###${NC}Creation du fichier ${BONUS_NAME}${BLUE}###${ORANGE}"
-	${CC} ${FLAGS} -o ${BONUS_NAME} ${NAME_BONUS}
-	@echo "${NC}"
+bonus : ${BOBJ} ${NAME_BONUS} ${SOFT_BONUS}
 
 ${NAME_BONUS} : ${BOBJ}
 	@echo "${BLUE}###${NC}Update de l'archive ${NAME_BONUS}${BLUE}###${MAGENTA}"
-	${AR} ${NAME_BONUS} ${FLIB} ${BOBJ}
+	${AR} ${NAME_BONUS} ${BOBJ}
 	@echo "${NC}"
 
-ptest5 :
-		$(eval ARG = $(shell shuf -i 0-50 -n 5))
-		./push_swap $(ARG)
+${SOFT_BONUS} :
+	@echo "${BLUE}###${NC}Creation du fichier ${SOFT_BONUS}${BLUE}###${ORANGE}"
+	${CC} ${FLAGS} -g3 -o ${SOFT_BONUS} ${NAME_BONUS} ${FLIB}
+	@echo "${NC}"
+
+vtest2 :
+		$(eval ARG = $(shell shuf -i 0-50 -n 2))
+		${VAL} ./push_swap $(ARG)
+
+vtest3 :
+		$(eval ARG = $(shell shuf -i 0-50 -n 3))
+		${VAL} ./push_swap $(ARG)
 
 vtest5 :
 		$(eval ARG = $(shell shuf -i 0-50 -n 5))
 		${VAL} ./push_swap $(ARG)
-
-ptest100 :
-		$(eval ARG = $(shell shuf -i 0-1000 -n 100))
-		./push_swap $(ARG)
 
 vtest100 :
 		$(eval ARG = $(shell shuf -i 0-1000 -n 100))
@@ -156,12 +157,15 @@ clean :
 	@echo "${GREEN}###${NC}Nettoyage OK${GREEN}###${NC}\n"
 
 fclean : clean
-	@echo "${RED}###${NC}Nettoyage de l'archive ${NAME}${RED}###"
+	@echo "${RED}###${NC}Nettoyage d'archives et de Softs${RED}###"
 	${RM} -f ${NAME}
-	${RM} -f push_swap
+	${RM} -f ${NAME_BONUS}
+	${RM} -f ${SOFT_NAME}
+	${RM} -f ${SOFT_BONUS}
 	@echo "${GREEN}###${NC}Nettoyage OK${GREEN}###${NC}\n"
 
 re : fclean all
 
 norm :
-	@norminette $(COTHERS) | grep -v OK! || true
+	${MAKE} norm -C libft
+	@norminette $(NORM) | grep -v OK! || true

@@ -90,5 +90,9 @@ int			ft_basecheck(char *base);
 int			ft_hex_size(unsigned long int nb, char *base);
 
 long int	ft_long_strict_atoi(const char *nptr);
+char		*ft_strjoin_free(char *s1, char *s2);
+void		*ft_zalloc(size_t nmemb, size_t size);
+void		ft_free(char **str);
+void		ft_trio_free(char **str, char **str2, char **str3);
 
 #endif
