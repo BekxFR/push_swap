@@ -6,7 +6,7 @@
 /*   By: chillion <chillion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/01 11:00:53 by chillion          #+#    #+#             */
-/*   Updated: 2022/09/02 16:57:50 by chillion         ###   ########.fr       */
+/*   Updated: 2022/09/02 18:42:52 by chillion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,10 @@
 
 char	*ft_charjoin(char *arg, char buf)
 {
-	int i;
-	char *line;
+	int		i;
+	char	*line;
 
 	i = ft_strlen(arg) + 1;
-//	line = ft_zalloc(i + 2, sizeof * line);
 	line = (char *)malloc(sizeof(char) * (i + 1));
 	if (!line)
 		return (NULL);
@@ -40,16 +39,18 @@ int	ft_check_arg(char *arg)
 	int	i;
 
 	i = 0;
-	if (arg[0] == 'p' || arg[0] == 'r'|| arg[0] == 's')
+	if (arg[0] == 'p' || arg[0] == 'r' || arg[0] == 's')
 	{
 		if ((arg[1] == 'a' || arg[1] == 'b') && (arg[2] == '\n'))
 			i = 1;
 	}
-	if ((arg[0] == 'r' && arg[1] == 'r' && arg[2] == '\n') || (arg[0] == 's' && arg[1] == 's' && arg[2] == '\n'))
+	if ((arg[0] == 'r' && arg[1] == 'r' && arg[2] == '\n')
+		|| (arg[0] == 's' && arg[1] == 's' && arg[2] == '\n'))
 		i = 1;
 	if (arg[0] == 'r' && arg[1] == 'r')
 	{
-		if ((arg[2] == 'a' || arg[2] == 'b' || arg[2] == 'r') && (arg[3] == '\n'))
+		if ((arg[2] == 'a' || arg[2] == 'b' || arg[2] == 'r')
+			&& (arg[3] == '\n'))
 			i = 1;
 	}
 	return (i);
@@ -64,9 +65,49 @@ char	*ft_init_str(char *str)
 	return (str);
 }
 
-void	ft_do_shortarg(char *arg, t_ps **lst, t_ps **lst2)
+void	ft_do_shortarg_r(char *arg, t_ps **lst, t_ps **lst2)
 {
 	if (arg[0] == 'r' && arg[1] == 'r')
+	{
+		ft_printf("rr\n");
+		ft_rr(lst, lst2);
+	}
+	if (arg[0] == 'r' && arg[1] == 'a')
+	{
+		ft_printf("ra\n");
+		ft_ra(lst);
+	}
+	if (arg[0] == 'r' && arg[1] == 'b')
+	{
+		ft_printf("rb\n");
+		ft_rb(lst2);
+	}
+}
+
+void	ft_do_shortarg_s(char *arg, t_ps **lst, t_ps **lst2)
+{
+	if (arg[0] == 's' && arg[1] == 's')
+	{
+		ft_printf("ss\n");
+		ft_ss(lst, lst2);
+	}
+	if (arg[0] == 's' && arg[1] == 'a')
+	{
+		ft_printf("sa\n");
+		ft_sa(lst);
+	}
+	if (arg[0] == 's' && arg[1] == 'b')
+	{
+		ft_printf("sb\n");
+		ft_sb(lst2);
+	}
+}
+
+void	ft_do_shortarg(char *arg, t_ps **lst, t_ps **lst2)
+{
+	ft_do_shortarg_r(arg, lst, lst2);
+	ft_do_shortarg_s(arg, lst, lst2);
+/* 	if (arg[0] == 'r' && arg[1] == 'r')
 	{
 		ft_printf("rr\n");
 		ft_rr(lst, lst2);
@@ -95,7 +136,7 @@ void	ft_do_shortarg(char *arg, t_ps **lst, t_ps **lst2)
 	{
 		ft_printf("sb\n");
 		ft_sb(lst2);
-	}
+	} */
 	if (arg[0] == 'p' && arg[1] == 'a')
 	{
 		ft_printf("pa\n");
@@ -127,23 +168,48 @@ void	ft_do_longarg(char *arg, t_ps **lst, t_ps **lst2)
 	}
 }
 
-int		ft_do_args(char *args, t_ps **lst, t_ps **lst2)
+int	ft_checker_args_end(char *args)
 {
-	int	i;
-	int	j;
-	char *tmp;
+	int i;
 
 	i = 0;
 	while (args[i] != '\0')
 		i++;
 	if (args[i - 1] != '\n')
 		return (0);
+	return (i);
+}
+
+int	ft_parse_args(int j, char *tmp, t_ps ** lst, t_ps **lst2)
+{
+	if (tmp[j + 3] == '\n')
+	{
+		ft_do_longarg(tmp, lst, lst2);
+		j = 4;
+	}
+	else if (tmp[j + 2] == '\n')
+	{
+		ft_do_shortarg(tmp, lst, lst2);
+		j = 3;
+	}
+	return (j);
+}
+
+int	ft_do_args(char *args, t_ps **lst, t_ps **lst2)
+{
+	int		i;
+	int		j;
+	char	*tmp;
+
+	if (ft_checker_args_end(args) == 0)
+		return (0);
 	i = 0;
 	tmp = args;
 	while (i != 1)
 	{
 		j = 0;
-		if (tmp[j + 3] == '\n')
+		j = ft_parse_args(j, tmp, lst, lst2);
+/* 		if (tmp[j + 3] == '\n')
 		{
 			ft_do_longarg(tmp, lst, lst2);
 			j = 4;
@@ -152,7 +218,7 @@ int		ft_do_args(char *args, t_ps **lst, t_ps **lst2)
 		{
 			ft_do_shortarg(tmp, lst, lst2);
 			j = 3;
-		}
+		} */
 		if (tmp[j] == '\0')
 			i = 1;
 		else
@@ -176,9 +242,7 @@ int	ft_check_args(char *arg, char *args, t_ps **lst, t_ps **lst2)
 		if (buf == '\n')
 		{
 			if ((i = ft_check_arg(arg)) != 1)
-			{
 				break ;
-			}
 			args = ft_strjoin_free(args, arg);
 			ft_free(&arg);
 			arg = ft_init_str(arg);
