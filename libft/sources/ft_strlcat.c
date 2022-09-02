@@ -29,10 +29,10 @@ size_t	ft_strlcat(char *dest, const char *src, size_t size)
 		return (lens + x);
 	}
 	if (lens < size - lend)
-		ft_memcpy(dest + x, src, lens + 1);
+		ft_memcpy(dest + lend, src, lens + 1);
 	else
 	{
-		ft_memcpy(dest + x, src, size - lend - 1);
+		ft_memcpy(dest + lend, src, size - lend - 1);
 		dest[size - 1] = '\0';
 	}
 	return (lend + lens);

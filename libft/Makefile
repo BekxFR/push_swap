@@ -68,7 +68,7 @@ SRCS = ft_isalpha.c	\
 	ft_putchar.c	\
 	ft_putnbr.c	\
 	ft_putstr.c	ft_nb_size.c	ft_strdouble.c	ft_putnbr_base.c	ft_puthex_base.c	ft_basecheck.c	ft_hex_size.c	\
-	ft_printf.c	ft_format_dixu.c	ft_format_scp.c	ft_long_atoi.c	ft_strjoin_free.c	ft_strjoin_free.c	ft_zalloc.c	\
+	ft_printf.c	ft_format_dixu.c	ft_format_scp.c	ft_long_strict_atoi.c	ft_strjoin_free.c	ft_strjoin_free.c	ft_zalloc.c	\
 	ft_free.c	ft_trio_free.c	\
 
 OBJS = $(SRCS:%.c=%.o)

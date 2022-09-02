@@ -123,11 +123,11 @@ int	main(int argc, char **argv)
 		}
 		if (stack)
 		{
-			if (ft_tester_makefile(argc, &stack, &stack2) != 1)
-				ft_printf("ECHeC");
+			if (ft_tester_makefile(argc, &stack, &stack2) == 0)
+				ft_printf("OK\n");
 			ft_clean_lst(&stack);
+			ft_clean_lst(&stack2);			
 		}
-//		ft_tri_list(&stack, &stack2, argc);
 	}	
 	return (0);
 }

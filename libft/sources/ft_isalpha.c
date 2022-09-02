@@ -19,15 +19,3 @@ int	ft_isalpha(int c)
 	}
 	return (0);
 }
-/*
-#include <stdio.h>
-#include <ctype.h>
-int	main(void)
-{
-	char	c;
-
-	c = 'w';
-	printf("%d\n", isalpha(c));
-	printf("%d\n", ft_isalpha(c));
-}
-*/

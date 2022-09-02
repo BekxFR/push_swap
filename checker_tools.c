@@ -6,7 +6,7 @@
 /*   By: chillion <chillion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/01 11:00:53 by chillion          #+#    #+#             */
-/*   Updated: 2022/09/01 18:18:03 by chillion         ###   ########.fr       */
+/*   Updated: 2022/09/02 16:57:50 by chillion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,21 +64,107 @@ char	*ft_init_str(char *str)
 	return (str);
 }
 
-int ft_do_args(char *tmp, t_ps **lst, t_ps **lst2)
+void	ft_do_shortarg(char *arg, t_ps **lst, t_ps **lst2)
 {
-	int	i;
-
-	i = 0;
-	while (tmp[i + 1] != '\0')
+	if (arg[0] == 'r' && arg[1] == 'r')
 	{
-		if (tmp[i] != '\n')
-			return (0);
+		ft_printf("rr\n");
+		ft_rr(lst, lst2);
 	}
-	ft_split(tmp, '\n')
-	
+	if (arg[0] == 'r' && arg[1] == 'a')
+	{
+		ft_printf("ra\n");
+		ft_ra(lst);
+	}
+	if (arg[0] == 'r' && arg[1] == 'b')
+	{
+		ft_printf("rb\n");
+		ft_rb(lst2);
+	}
+	if (arg[0] == 's' && arg[1] == 's')
+	{
+		ft_printf("ss\n");
+		ft_ss(lst, lst2);
+	}
+	if (arg[0] == 's' && arg[1] == 'a')
+	{
+		ft_printf("sa\n");
+		ft_sa(lst);
+	}
+	if (arg[0] == 's' && arg[1] == 'b')
+	{
+		ft_printf("sb\n");
+		ft_sb(lst2);
+	}
+	if (arg[0] == 'p' && arg[1] == 'a')
+	{
+		ft_printf("pa\n");
+		ft_pa(lst, lst2);
+	}
+	if (arg[0] == 'p' && arg[1] == 'b')
+	{
+		ft_printf("pb\n");
+		ft_pb(lst, lst2);
+	}
 }
 
-int	ft_check_args(char *arg, char *tmp, t_ps **lst, t_ps **lst2)
+void	ft_do_longarg(char *arg, t_ps **lst, t_ps **lst2)
+{
+	if (arg[0] == 'r' && arg[1] == 'r' && arg[2] == 'r')
+	{
+		ft_printf("rrr\n");
+		ft_rrr(lst, lst2);
+	}
+	if (arg[0] == 'r' && arg[1] == 'r' && arg[2] == 'a')
+	{
+		ft_printf("rra\n");
+		ft_rra(lst);
+	}
+	if (arg[0] == 'r' && arg[1] == 'r' && arg[2] == 'b')
+	{
+		ft_printf("rrb\n");
+		ft_rrb(lst2);
+	}
+}
+
+int		ft_do_args(char *args, t_ps **lst, t_ps **lst2)
+{
+	int	i;
+	int	j;
+	char *tmp;
+
+	i = 0;
+	while (args[i] != '\0')
+		i++;
+	if (args[i - 1] != '\n')
+		return (0);
+	i = 0;
+	tmp = args;
+	while (i != 1)
+	{
+		j = 0;
+		if (tmp[j + 3] == '\n')
+		{
+			ft_do_longarg(tmp, lst, lst2);
+			j = 4;
+		}
+		else if (tmp[j + 2] == '\n')
+		{
+			ft_do_shortarg(tmp, lst, lst2);
+			j = 3;
+		}
+		if (tmp[j] == '\0')
+			i = 1;
+		else
+		{
+			i = i + j;
+			tmp = &args[i];
+		}
+	}
+	return (i);
+}
+
+int	ft_check_args(char *arg, char *args, t_ps **lst, t_ps **lst2)
 {
 	int		i;
 	char	buf;
@@ -91,64 +177,49 @@ int	ft_check_args(char *arg, char *tmp, t_ps **lst, t_ps **lst2)
 		{
 			if ((i = ft_check_arg(arg)) != 1)
 			{
-				ft_trio_free(&arg, &tmp, NULL);
-				return (0);
+				break ;
 			}
-			tmp = ft_strjoin_free(tmp, arg);
+			args = ft_strjoin_free(args, arg);
 			ft_free(&arg);
 			arg = ft_init_str(arg);
 			if (!arg)
 				return (0);
 		}
 	}
-	ft_do_args(tmp, lst, lst2);
-	ft_trio_free(&arg, &tmp, NULL);
+	if (i == 0)
+	{
+		ft_printf("Error\n");
+		ft_trio_free(&arg, &args, NULL);
+		return (2);
+	}
+	else
+		i = ft_do_args(args, lst, lst2);
+	ft_trio_free(&arg, &args, NULL);
 	return (i);
 }
-
-
 
 int	ft_tester_makefile(int argc, t_ps **lst, t_ps **lst2)
 {
 	char	*arg;
-	char	*tmp;
+	char	*args;
 
 	arg = NULL;
 	arg = ft_init_str(arg);
-	tmp = NULL;
-	tmp = ft_init_str(tmp);
+	args = NULL;
+	args = ft_init_str(args);
 	argc = 0;
-	argc = ft_check_args(arg, tmp, argc);
-/* 	if (argc == 1)
-		ft_do_args(tmp, lst, lst2) */
+	argc = ft_check_args(arg, args, lst, lst2);
+	if (argc == 2)
+		return (2);
+	else if (argc != 0)
+	{
+		argc = ft_tried_list(lst);
+		ft_printf("TEST23 ARGC :%d", argc);
+	}
+	if (argc != 0 || *lst2)
+	{
+		ft_printf("KO\n");
+		argc = 1;
+	}
 	return (argc);
 }
-
-/* int	ft_tester_makefile(int argc) //, t_ps **lst, t_ps **lst2)
-{
-	char	buf;
-	char	*arg;
-	char	*tmp;
-
-	arg = NULL;
-	arg = ft_init_str(arg);
-	tmp = NULL;
-	tmp = ft_init_str(tmp);
-	argc = 0;
-	while (read(0, &buf, 1) > 0)
-	{
-		arg = ft_charjoin(arg, buf);
-		if (buf == '\n')
-		{
-			if ((argc = ft_check_arg(arg)) != 1)
-				return (0);
-			tmp = ft_strjoin_free(tmp, arg);
-			ft_free(&arg);
-			arg = ft_init_str(arg);
-			if (!arg)
-				return (0);
-		}
-	}
-	ft_trio_free(&arg, &tmp, NULL);
-	return (argc);
-} */

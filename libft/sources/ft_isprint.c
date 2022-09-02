@@ -19,15 +19,3 @@ int	ft_isprint(int c)
 	}
 	return (0);
 }
-/*
-#include <stdio.h>
-#include <ctype.h>
-int	main(void)
-{
-	char	c;
-
-	c = '\t';
-	printf("%d\n", isprint(c));
-	printf("%d\n", ft_isprint(c));
-}
-*/

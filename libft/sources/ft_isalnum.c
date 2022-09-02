@@ -19,24 +19,3 @@ int	ft_isalnum(int c)
 	}
 	return (0);
 }
-/*
-int	main(void)
-{
-//	signed char	c;
-//
-//	c = ' ';
-//	printf("%d\n", isalnum(c));
-//	printf("%d\n", ft_isalnum(c));
-
-    int c;
-
-    c = 0;
-    while (c <= 500)
-    {
-	printf("%d  &&  ", isalnum(c));
-	printf("%d\n", ft_isalnum(c));
-    c++;
-    }
-
-}
-*/

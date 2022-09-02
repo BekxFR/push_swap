@@ -3,13 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chillion <chillion@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chillion <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 11:50:04 by chillion          #+#    #+#             */
-/*   Updated: 2022/09/01 18:20:31 by chillion         ###   ########.fr       */
+/*   Updated: 2022/05/17 11:50:16 by chillion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 #include "libft.h"
 
 static int	ft_noword(char *s, char c, int x)
@@ -75,7 +74,7 @@ static char	**ft_split_cpy(char **str, char *src, char c, int i)
 		if (ft_noword(src, c, y) > 0)
 			y = y + ft_noword(src, c, y);
 		z = ft_word(src, c, y);
-		str[x] = malloc(sizeof(char) * (z + 1));
+		str[x] = (char *)malloc(sizeof(char) * (z + 1));
 		if (str == 0)
 			return (NULL);
 		ft_bzero(str[x], z + 1);
@@ -95,7 +94,7 @@ char	**ft_split(char const *s, char c)
 
 	news = (char *)s;
 	x = ft_count(news, c);
-	str = malloc(sizeof(char *) * (x + 1));
+	str = (char **)malloc(sizeof(char *) * (x + 1));
 	if (str == 0)
 	{
 		return (NULL);

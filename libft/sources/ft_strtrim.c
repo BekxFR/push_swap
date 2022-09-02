@@ -44,7 +44,7 @@ char	*ft_strtrim(char const *s1, char const *set)
 		return (NULL);
 	while (y > x && ft_check_char(set, s1[y - 1]) == 1)
 		y--;
-	str = malloc(sizeof(char) * (y - x + 1));
+	str = (char *)malloc(sizeof(char) * (y - x + 1));
 	if (str == 0)
 		return (NULL);
 	z = 0;

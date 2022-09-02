@@ -15,7 +15,7 @@ void	*ft_calloc(size_t nmemb, size_t size)
 {
 	void	*dest;
 
-	if (nmemb > 2147483647 / size || size > 2147483647 / nmemb)
+	if (nmemb != 0 && (nmemb * size / nmemb) != size)
 	{
 		return (NULL);
 	}
