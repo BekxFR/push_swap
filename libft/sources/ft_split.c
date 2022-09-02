@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chillion <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: chillion <chillion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 11:50:04 by chillion          #+#    #+#             */
-/*   Updated: 2022/05/17 11:50:16 by chillion         ###   ########.fr       */
+/*   Updated: 2022/09/02 17:43:01 by chillion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "libft.h"
 
 static int	ft_noword(char *s, char c, int x)

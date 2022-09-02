@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   ft_format_scp.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chillion <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: chillion <chillion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 10:27:19 by chillion          #+#    #+#             */
-/*   Updated: 2022/07/13 10:27:23 by chillion         ###   ########.fr       */
+/*   Updated: 2022/09/02 17:45:36 by chillion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "ft_printf.h"
 
 int	ft_format_s(char *str, t_l *tl)

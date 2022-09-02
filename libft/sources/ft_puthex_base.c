@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   ft_puthex_base.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chillion <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: chillion <chillion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 10:44:53 by chillion          #+#    #+#             */
-/*   Updated: 2022/07/13 10:44:56 by chillion         ###   ########.fr       */
+/*   Updated: 2022/09/02 17:47:28 by chillion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "libft.h"
 
 void	ft_puthex_base(unsigned long int nbr, char *base)
@@ -26,10 +27,3 @@ void	ft_puthex_base(unsigned long int nbr, char *base)
 		ft_putchar(base[nbr]);
 	}
 }
-/*
-int	main(void)
-{
-    ft_putnbr_base(-1u);
-	ft_putchar('\n');
-}
-*/

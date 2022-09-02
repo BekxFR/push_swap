@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strdouble.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chillion <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: chillion <chillion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 10:45:11 by chillion          #+#    #+#             */
-/*   Updated: 2022/07/13 10:45:19 by chillion         ###   ########.fr       */
+/*   Updated: 2022/09/02 17:42:56 by chillion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "libft.h"
 
 int	ft_strdouble(char *str)

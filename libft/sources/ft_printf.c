@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chillion <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: chillion <chillion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 10:27:57 by chillion          #+#    #+#             */
-/*   Updated: 2022/07/13 10:28:07 by chillion         ###   ########.fr       */
+/*   Updated: 2022/09/02 17:43:29 by chillion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "ft_printf.h"
 
 const char	*ft_format_arg(va_list arg, const char *format, t_l *tl)

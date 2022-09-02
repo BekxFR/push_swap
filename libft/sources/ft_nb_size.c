@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   ft_nb_size.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chillion <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: chillion <chillion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 10:40:46 by chillion          #+#    #+#             */
-/*   Updated: 2022/07/13 10:40:49 by chillion         ###   ########.fr       */
+/*   Updated: 2022/09/02 17:43:35 by chillion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "libft.h"
 
 int	ft_nb_size(int nb, char *base)
