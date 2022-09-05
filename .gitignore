@@ -7,6 +7,9 @@ push_swap
 .vscode
 *.o
 *.a
-push_swap*
+"push_swap"
+push_swap.a
+push_swap_tester
+push_swap_visualizer
 checker_linux
 checker

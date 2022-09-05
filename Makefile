@@ -6,11 +6,11 @@
 #    By: chillion <chillion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/01 12:07:22 by chillion          #+#    #+#              #
-#    Updated: 2022/09/01 12:07:22 by chillion         ###   ########.fr        #
+#    Updated: 2022/09/05 14:22:43 by chillion         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-.PHONY : all test3 test5 test100 test500 vtest2 vtest3 vtest5 vtest100 vtest500 bonus norm clean fclean re
+.PHONY : all test3 test5 test100 test500 vtest2 vtest3 vtest5 ctest500 vtest500 bonus norm clean fclean re
 
 NAME := push_swap.a
 NAME_BONUS := checker.a
@@ -48,6 +48,7 @@ SRCS = push_swap.c	\
 
 BONUS = checker.c	\
 	checker_tools.c	\
+	checker_tools_do.c	\
 	push_swap_tools_sp.c	\
 	push_swap_tools_r.c	\
 	push_swap_tools_rr.c	\
@@ -94,7 +95,7 @@ ${SOFT_NAME} :
 $(OBJF) :
 	@mkdir -p ${OBJ_DIR}
 
-bonus : ${BOBJ} ${NAME_BONUS} ${SOFT_BONUS}
+bonus : ${FLIB} ${BOBJ} ${NAME_BONUS} ${SOFT_BONUS}
 
 ${NAME_BONUS} : ${BOBJ}
 	@echo "${BLUE}###${NC}Update de l'archive ${NAME_BONUS}${BLUE}###${MAGENTA}"
@@ -108,23 +109,23 @@ ${SOFT_BONUS} :
 
 vtest2 :
 		$(eval ARG = $(shell shuf -i 0-50 -n 2))
-		${VAL} ./push_swap $(ARG)
+		${VAL} ./push_swap $(ARG) | ${VAL} ./checker $(ARG)
 
 vtest3 :
 		$(eval ARG = $(shell shuf -i 0-50 -n 3))
-		${VAL} ./push_swap $(ARG)
+		${VAL} ./push_swap $(ARG) | ${VAL} ./checker $(ARG)
 
 vtest5 :
 		$(eval ARG = $(shell shuf -i 0-50 -n 5))
-		${VAL} ./push_swap $(ARG)
+		${VAL} ./push_swap $(ARG) | ${VAL} ./checker $(ARG)
 
-vtest100 :
-		$(eval ARG = $(shell shuf -i 0-1000 -n 100))
+ctest500 :
+		$(eval ARG = $(shell shuf -i 0-2000 -n 500))
 		${VAL} ./push_swap $(ARG)
 
 vtest500 :
 		$(eval ARG = $(shell shuf -i 0-2000 -n 500))
-		${VAL} ./push_swap $(ARG)
+		${VAL} ./push_swap $(ARG) | ${VAL} ./checker $(ARG)
 
 test3 :
 		$(eval ARG = $(shell shuf -i 0-50 -n 3))
@@ -158,10 +159,7 @@ clean :
 
 fclean : clean
 	@echo "${RED}###${NC}Nettoyage d'archives et de Softs${RED}###"
-	${RM} -f ${NAME}
-	${RM} -f ${NAME_BONUS}
-	${RM} -f ${SOFT_NAME}
-	${RM} -f ${SOFT_BONUS}
+	${RM} -f ${NAME} ${NAME_BONUS} ${SOFT_NAME} ${SOFT_BONUS}
 	@echo "${GREEN}###${NC}Nettoyage OK${GREEN}###${NC}\n"
 
 re : fclean all
