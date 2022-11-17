@@ -6,7 +6,7 @@
 #    By: chillion <chillion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/01 12:07:22 by chillion          #+#    #+#              #
-#    Updated: 2022/09/05 14:22:43 by chillion         ###   ########.fr        #
+#    Updated: 2022/09/05 14:45:20 by chillion         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,6 +48,7 @@ SRCS = push_swap.c	\
 
 BONUS = checker.c	\
 	checker_tools.c	\
+	checker_tools2.c	\
 	checker_tools_do.c	\
 	push_swap_tools_sp.c	\
 	push_swap_tools_r.c	\
@@ -64,7 +65,6 @@ FCLIB := ${MAKE} fclean -C libft
 
 OBJS = $(SRCS:%.c=%.o)
 BOBJS = $(BONUS:%.c=%.o)
-NORM = $(wildcard *.c) $(wildcard *.h)
 
 OBJ = $(addprefix $(OBJ_DIR),$(OBJS))
 BOBJ = $(addprefix $(OBJ_DIR),$(BOBJS))
@@ -166,4 +166,4 @@ re : fclean all
 
 norm :
 	${MAKE} norm -C libft
-	@norminette $(NORM) | grep -v OK! || true
+	@norminette $(SRCS) $(BONUS) | grep -v OK! || true
