@@ -48,7 +48,6 @@ SRCS = push_swap.c	\
 
 BONUS = checker.c	\
 	checker_tools.c	\
-	checker_tools2.c	\
 	checker_tools_do.c	\
 	push_swap_tools_sp.c	\
 	push_swap_tools_r.c	\

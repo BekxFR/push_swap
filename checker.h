@@ -34,6 +34,5 @@ void	ft_checker(int argc, t_ps **lst, t_ps **lst2);
 int		ft_init_args(int argc, t_ps **lst, t_ps **lst2);
 int		ft_check_args(char *arg, char *args, t_ps **lst, t_ps **lst2);
 void	ft_arg_error(char *arg, char *args, t_ps **lst, t_ps **lst2);
-void	ft_join_args_arg(char *args, char *arg);
 
 #endif
