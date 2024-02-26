@@ -20,5 +20,5 @@
 - Develop a program named checker that verifies whether the sequence of instructions output by push_swap correctly sorts the stack.
 - The checker program should take the initial stack and the sequence of instructions as inputs and output either "OK" if the stack is sorted correctly or "KO" if not.
 - Handle potential errors gracefully, providing appropriate error messages if the input data or instructions are invalid.
-- 
+
 By completing these tasks, you will gain valuable experience in algorithm design, C programming, and algorithmic complexity analysis.
