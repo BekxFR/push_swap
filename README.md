@@ -1,5 +1,22 @@
 # Push_swap Algorithm Exercise
 
+
+|    Project Name    |                                                                       push_swap                                                                      |
+| :----------------: | :-------------------------------------------------------------------------------------------------------------------------------------------------: |
+|    Description     |                                             A sorting algorithm using stacks with a limited set of instrutions and using the lowest possible number of actions                                              |
+|    Technologies    | <a href="#"><img alt="C" src="https://custom-icon-badges.demolab.com/badge/C-03599C.svg?logo=c-in-hexagon&logoColor=white&style=for-the-badge"></a> |
+| External libraries |     read(), write(), malloc(), free(), exit()      |
+
+#### Usage
+
+```bash
+  gcl https://github.com/trobert42/push_swap.git
+  cd push_swap
+  make
+  ./push_swap [list of numbers]
+```
+
+
 ### This project entails sorting data in a stack using a restricted set of instructions while minimizing the number of operations. The main tasks involve:
 
    1. Implementing efficient sorting algorithms tailored to the restricted instruction set.
