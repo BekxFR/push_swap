@@ -10,7 +10,7 @@
 #### Usage
 
 ```bash
-  gcl https://github.com/trobert42/push_swap.git
+  gcl https://github.com/BekxFR/push_swap.git
   cd push_swap
   make
   ./push_swap [list of numbers]
